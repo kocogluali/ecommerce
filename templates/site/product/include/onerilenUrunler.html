@@ -1,0 +1,57 @@
+                <!-- Onerilen Ürünler -->
+{#                <section class="section-product-cards-carousel">#}
+{#                    <header>#}
+{#                        <h2 class="h1">Önerilen Ürünler</h2>#}
+{#                        <div class="owl-nav">#}
+{#                            <a href="#products-carousel-prev" data-target="#recommended-product" class="slider-prev"><i#}
+{#                                    class="fa fa-angle-left"></i></a>#}
+{#                            <a href="#products-carousel-next" data-target="#recommended-product" class="slider-next"><i#}
+{#                                    class="fa fa-angle-right"></i></a>#}
+{#                        </div>#}
+{#                    </header>#}
+{#                    <div id="recommended-product">#}
+{#                        <div class="woocommerce columns-4">#}
+{#                            <div class="products owl-carousel products-carousel columns-4 owl-loaded owl-drag">#}
+{#                                {% for p in oneriler %}#}
+{#                                    <div class="product">#}
+{#                                        <div class="product-outer">#}
+{#                                            <div class="product-inner">#}
+{#                                                <span class="loop-product-categories"><a href="" rel="tag">{{ p.main_menu.title }}</a></span>#}
+{#                                                <a href="{% url 'shop:product_detail' p.main_menu.slug p.slug %}">#}
+{#                                                    <h3>{{ p.title }}</h3>#}
+{#                                                    <div class="product-thumbnail">#}
+{#                                                        {% thumbnail p.image '180x160' crop='center' as im %}#}
+{#                                                            <img src="{{ im.url }}"#}
+{#                                                                 data-echo="{{ im.url }}"#}
+{#                                                                 class="img-responsive" alt="">#}
+{#                                                        {% endthumbnail %}#}
+{#                                                    </div>#}
+{#                                                </a>#}
+{#                                                <div class="price-add-to-cart">#}
+{#                                                <span class="price">#}
+{#                                                    <span class="electro-price">#}
+{#                                                        <ins><span class="amount"> </span></ins>#}
+{#                                                        <span class="amount"> $ {{ p.price }}</span>#}
+{#                                                    </span>#}
+{#                                                </span>#}
+{#                                                    <a rel="nofollow" href="single-product.html"#}
+{#                                                       class="button add_to_cart_button">Add to cart</a>#}
+{#                                                </div><!-- /.price-add-to-cart -->#}
+{##}
+{#                                                <div class="hover-area">#}
+{#                                                    <div class="action-buttons">#}
+{#                                                        <a href="#" rel="nofollow" class="add_to_wishlist"> Wishlist</a>#}
+{#                                                        <a href="compare.html" class="add-to-compare-link"> Compare</a>#}
+{#                                                    </div>#}
+{#                                                </div>#}
+{##}
+{#                                            </div><!-- /.product-inner -->#}
+{#                                        </div><!-- /.product-outer -->#}
+{#                                    </div><!-- /.products -->#}
+{#                                {% endfor %}#}
+{##}
+{#                            </div>#}
+{#                        </div>#}
+{#                    </div>#}
+{#                </section>#}
+                <!-- Onerilen Ürünler SON -->

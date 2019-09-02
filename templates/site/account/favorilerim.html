@@ -1,0 +1,113 @@
+{% extends 'site/base/base.html' %}
+{% load thumbnail %}
+{% load proTags %}
+{% block meta %}
+
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'homeView' %}">Anasayfa</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>İstek Listem</nav>
+        <div class="content-area" id="primary">
+            <main class="site-main" id="main">
+                <article class="page type-page status-publish hentry">
+                    <div itemprop="mainContentOfPage" class="entry-content">
+                        <div id="yith-wcwl-messages"></div>
+                        <form class="woocommerce" method="post" id="yith-wcwl-form">
+                            <input type="hidden" value="68bc4ab99c" name="yith_wcwl_form_nonce" id="yith_wcwl_form_nonce"><input type="hidden" value="/electro/wishlist/" name="_wp_http_referer">
+                            <!-- TITLE -->
+                            <div class="wishlist-title ">
+                                <h2>Favori Listem</h2>
+                            </div>
+                            <!-- WISHLIST TABLE -->
+                            <table data-token="" data-id="" data-page="1" data-per-page="5" data-pagination="no" class="shop_table cart wishlist_table">
+                                <thead>
+                                <tr>
+                                    <th class="product-remove"></th>
+                                    <th class="product-thumbnail"></th>
+                                    <th class="product-name">
+                                        <span class="nobr">Ürün Adı</span>
+                                    </th>
+                                    <th class="product-price">
+                                        <span class="nobr">Birim Fiyat</span>
+                                    </th>
+                                    <th class="product-stock-stauts">
+                                        <span class="nobr">Stok Durumu</span>
+                                    </th>
+                                    <th class="product-add-to-cart"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for p in favList %}
+                                    <tr>
+                                    <td class="product-remove">
+                                        <div>
+                                            <a title="İstek Listemden Kaldır" class="remove remove_from_wishlist" href="javascript:void(0)" name="{{ p.id }},{{ request.user.id }}">×</a>
+                                        </div>
+                                    </td>
+                                    <td class="product-thumbnail">
+                                        <a href="{{ p.get_url }}">
+                                            {% thumbnail p.image '180x180' crop='center' as im %}
+                                                <img width="180" height="180" alt="1" class="wp-post-image" src="{{ im.url }}">
+                                            {% endthumbnail %}
+                                        </a>
+                                    </td>
+                                    <td class="product-name">
+                                        <a href="{{ p.get_url }}">{{ p.title }}</a>
+                                    </td>
+
+                                    <td class="product-price">
+                                        {% if p.parent_product.disc_price %}
+                                            <span class="amount">&#8378;
+                                                <span data-model-name="basketItemPrice" style="color: green;">{{ p.parent_product.disc_price }}</span>
+                                            </span>
+                                            <del><span class="amount">&#8378; {{ p.parent_product.price }}</span></del>
+                                        {% elif p.parent_product.disc_group %}
+                                            <span class="amount">&#8378;
+                                                <span data-model-name="basketItemPrice"
+                                                      style="color: red;">{{ p.parent_product.price|calcDiscountPrice:p.parent_product.disc_group.discPercentage }}</span> </span>
+                                            <del><span class="amount small  ">&#8378; {{ p.parent_product.price }}</span></del>
+                                        {% else %}
+                                            <span class="amount">&#8378; <span data-model-name="basketItemPrice">{{ p.price }}</span></span>
+                                        {% endif %}
+                                    </td>
+
+                                    <td class="product-stock-status">
+                                        {% if p.stock > 0 %}
+                                        <span class="in-stock">Stokta Var</span>
+                                        {% else %}
+                                         <span class="out-of-stock">Stokta Yok</span>
+                                        {% endif %}
+                                    </td>
+                                    <td class="product-add-to-cart">
+                                        <!-- Date added -->
+                                        <a href="{% url 'shop:product_detail' p.sub_menu.slug p.slug %}" class="button"> Sepete Ekle</a>
+                                        <!-- Change wishlist -->
+                                        <!-- Remove from wishlist -->
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                                </tbody>
+
+                                <tfoot>
+                                <tr>
+                                    <td colspan="6"></td>
+                                </tr>
+                                </tfoot>
+
+                            </table>
+
+                            <input type="hidden" value="85fe311a9d" name="yith_wcwl_edit_wishlist" id="yith_wcwl_edit_wishlist"><input type="hidden" value="/electro/wishlist/" name="_wp_http_referer">
+
+                        </form>
+
+                    </div><!-- .entry-content -->
+
+                </article><!-- #post-## -->
+
+            </main><!-- #main -->
+        </div><!-- #primary -->
+    </div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}

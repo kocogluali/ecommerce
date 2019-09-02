@@ -1,0 +1,46 @@
+{% extends 'site/base/base.html' %}
+{% block body %}
+    <div class="container">
+        <nav class="woocommerce-breadcrumb"><a href="https://demo.madrasthemes.com/electro">Anasayfa</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Sık Sorulan Sorular</nav>
+        <div class="site-content-inner">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+
+
+                    <article id="post-2505" class="post-2505 page type-page status-publish hentry">
+
+                        <header class="entry-header">
+                            <h1 class="entry-title">Sık Sorulan Sorular</h1>
+                        </header><!-- .entry-header -->
+                        <div class="entry-content">
+                            <div class="vc_row wpb_row vc_row-fluid inner-bottom-xs">
+                                {% for s in sss %}
+                                    <div class="wpb_column vc_column_container vc_col-sm-6">
+                                        <div class="vc_column-inner">
+                                            <div class="wpb_wrapper">
+                                                <div class="wpb_text_column wpb_content_element ">
+                                                    <div class="wpb_wrapper">
+                                                        <h3 class="faq-title" style="text-align: left;">{{ s.title }}</h3>
+                                                        <div class="text-content">
+                                                            <p>{{ s.desc }}</p>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+                        </div><!-- .entry-content -->
+
+                    </article><!-- #post-## -->
+
+                </main><!-- #main -->
+            </div><!-- #primary -->
+
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,162 @@
+{% load hometags %}
+{% load thumbnail %}
+<header id="masthead" class="site-header header-v1">
+    <div class="container">
+        <div class="row">
+
+            <!-- ============================================================= Header Logo ============================================================= -->
+            <div class="header-logo">
+                <a href="{% url 'homeView' %}" class="header-logo-link">
+                    <img src="{{ site.logo.url }}" alt="{{ site.title }}" width="160" height="40" style="height: 50px;width: 160px">
+                </a>
+            </div>
+            <!-- ============================================================= Header Logo : End============================================================= -->
+
+            <form class="navbar-search" method="get" action="{% url 'searchView' %}">
+                <label class="sr-only screen-reader-text" for="search">Search for:</label>
+                <div class="input-group">
+                    <input type="text" id="search" class="form-control search-field" dir="ltr" value="" name="q"
+                           placeholder="Ürünlerde Ara">
+                    <div class="input-group-addon search-categories">
+                        <select name="product_cat" id="product_cat" class="postform resizeselect" style="width: 143px;">
+                            <option value="0" selected="selected">Tüm Kategoriler</option>
+                            {% for m in MainMenu %}
+                                <option value="{{ m.slug }}">{{ m.title }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="input-group-btn">
+                        <input type="hidden" id="search-param" name="post_type" value="product">
+                        <button type="submit" class="btn btn-secondary"><i class="ec ec-search"></i></button>
+                    </div>
+                </div>
+            </form>
+            <ul class="navbar-mini-cart navbar-nav animate-dropdown nav pull-right flip">
+                <li class="nav-item dropdown">
+                    <a href="{% url 'accounts:myBasket' %}" class="nav-link" data-toggle="dropdown">
+                        <i class="ec ec-shopping-bag"></i>
+                        <span class="cart-items-count count">{{ basketItems.count }}</span>
+                        <span class="cart-items-total-price total-price">&#8378; <span class="amount">{{ basketItems.0.parent_sepet.sepet_tutar }}</span></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-mini-cart">
+                        <li>
+                            <div class="widget_shopping_cart_content">
+                                <ul class="cart_list product_list_widget ">
+                                    {% for i in basketItems %}
+                                        <li class="mini_cart_item">
+                                            <a title="Bu ürünü kaldır" class="remove" name="{{ i.id }}" href="javascript:void(0)">×</a>
+                                            <a href="{{ i.parent_product.get_url }}">
+                                                {% thumbnail i.parent_product.image '80x80' crop='center' as im %}
+                                                    <img class="attachment-shop_thumbnail size-shop_thumbnail wp-post-image"
+                                                         src="{{ im.url }}" alt="{{ i.parent_product.title }}">{{ i.parent_product.title }}
+                                                {% endthumbnail %}
+                                            </a>
+
+                                            <span class="quantity"><span data-model-name="basketItemQty">{{ i.qty }}</span> ×  &#8378; <span data-model-name="basketItemPrice" class="amount">{{ i.price }}</span></span>
+                                        </li>
+                                    {% endfor %}
+                                </ul><!-- end product list -->
+                                {% if basketItems.count > 0 %}
+                                    <p class="total1"><strong>Ara Toplam:</strong> &#8378;<span class="amount"> <span id="cartSubTotal">{{ basketItems.0.parent_sepet.sepet_tutar }}</span></span></p>
+                                    <p class="buttons">
+                                        <a class="button wc-forward" href="{% url 'accounts:myBasket' %}">Sepetim</a>
+                                        <a class="button checkout wc-forward" href="{% url 'accounts:checkout' %}">Ödeme</a>
+                                    </p>
+                                {% else %}
+                                    <p class="total1"><span>Sepetinizde Henüz Ürün Yok</span></p>
+                                {% endif %}
+
+
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+
+            <ul class="navbar-wishlist nav navbar-nav pull-right flip">
+                <li class="nav-item">
+                    <a href="{% url 'accounts:myWishList' %}" class="nav-link"><i class="ec ec-favorites"></i></a>
+                </li>
+            </ul>
+            <ul class="navbar-compare nav navbar-nav pull-right flip">
+                <li class="nav-item">
+                    <a href="compare.html" class="nav-link"><i class="ec ec-compare"></i></a>
+                </li>
+            </ul>
+        </div><!-- /.row -->
+
+        <div class="row">
+            <div class="col-xs-12 col-lg-3">
+                <nav>
+                    <ul class="list-group vertical-menu yamm make-absolute">
+                        <li class="list-group-item"><span><i class="fa fa-list-ul"></i> Kategoriler</span></li>
+                        {% for m in MainMenu %}
+                            <li class="yamm-tfw menu-item menu-item-has-children animate-dropdown dropdown">
+                                <a title="{{ m.title }}" data-hover="dropdown" href="{% url 'shop:product_list' m.slug %}"
+                                   data-toggle="dropdown" class="dropdown-toggle" aria-haspopup="true">{{ m.title }}</a>
+                                <ul role="menu" class=" dropdown-menu">
+                                    <li class="menu-item animate-dropdown menu-item-object-static_block">
+                                        <div class="yamm-content">
+                                            <div class="row bg-yamm-content bg-yamm-content-bottom bg-yamm-content-right">
+                                                <div class="col-sm-12">
+                                                    <div class="vc_column-inner ">
+                                                        <div class="wpb_wrapper">
+                                                            <div class="wpb_single_image wpb_content_element vc_align_left">
+                                                                <figure class="wpb_wrapper vc_figure">
+                                                                    <div class="vc_single_image-wrapper vc_box_border_grey">
+                                                                        <img src="assets/images/megamenu-2.png"
+                                                                             class="vc_single_image-img attachment-full"
+                                                                             alt="">
+                                                                    </div>
+                                                                </figure>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="vc_column-inner ">
+                                                        <div class="wpb_wrapper">
+                                                            <div class="wpb_text_column wpb_content_element ">
+                                                                <div class="wpb_wrapper">
+                                                                    <ul>
+                                                                        {% for sub in SubMenu|filterSubAttr:m.id %}
+                                                                            <li><a href="{% url 'shop:product_list' sub.slug %}">{{ sub.title }}</a>
+                                                                            </li>
+                                                                        {% endfor %}
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </li>
+                        {% endfor %}
+
+
+                    </ul>
+                </nav>
+            </div>
+
+            <div class="col-xs-12 col-lg-9">
+                <nav>
+                    <ul id="menu-secondary-nav" class="secondary-nav">
+                        {% for c in camps %}
+                            <li class="highlight menu-item"><a href="{{ c.getUrl }}">{{ c.title }}</a></li>
+                        {% endfor %}
+                        <li class="menu-item animate-dropdown"><a title="Hakkımızda" href="{% url 'hakkimizda' %}">Hakkımızda</a></li>
+                        <li class="menu-item animate-dropdown"><a title="SSS" href="{% url 'sss' %}">S.S.S</a></li>
+
+                        <li class="menu-item"><a title="Blog" href="{% url 'blog:blogListAll' %}" aria-haspopup="true">Blog</a></li>
+                        <li class="menu-item"><a title="Contact Us" href="#">İletişim</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</header><!-- #masthead -->

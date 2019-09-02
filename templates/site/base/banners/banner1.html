@@ -1,0 +1,31 @@
+<div class="home-v1-slider">
+    <!-- ========================================== SECTION – HERO : END========================================= -->
+
+    <div id="owl-main" class="owl-carousel owl-inner-nav owl-ui-sm">
+        {% for b in banners %}
+            <div class="item" style="background-image: url({{ b.image.url }});">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-offset-3 col-md-5">
+                            <div class="caption vertical-center text-left">
+                                <div class="hero-subtitle-v2 fadeInLeft-1">
+                                    {{ b.slogan }}
+                                </div>
+
+                                <div class="hero-2 fadeInRight-1">
+                                    {{ b.sub_slogan|safe }}
+                                </div>
+                                {% if b.url %}
+                                    <div class="hero-action-btn fadeInLeft-2">
+                                        <a href="{{ b.url }}" class="big le-button ">İncele</a>
+                                    </div>
+                                {% endif %}
+
+                            </div><!-- /.caption -->
+                        </div>
+                    </div>
+                </div><!-- /.container -->
+            </div><!-- /.item -->
+        {% endfor %}
+    </div><!-- /.owl-carousel -->
+</div><!-- /.home-v1-slider -->

@@ -1,0 +1,112 @@
+{% extends 'site/base/base.html' %}
+{% load proTags %}
+{% load static %}
+{% load thumbnail %}
+{% block meta %}
+    <link rel="stylesheet" href="{% static 'site/product/productFilterStyle.css' %}">
+{% endblock %}
+{% block body %}
+    <div class="container" data-inline-type="left-sidebar">
+        <input type="hidden" id="pageTrigger" value="False">
+        <input type="hidden" id="curAddToWishID" value="0">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'homeView' %}">Anasayfa</a><span class="delimiter"><i
+                class="fa fa-angle-right"></i></span>
+            <a href="/{{ products.0.main_menu.slug }}">{{ products.0.main_menu.title }}</a>
+            <span class="delimiter"><i
+                class="fa fa-angle-right"></i></span>{{ products.0.main_menu.title }} {{ products.0.sub_menu.title }}
+            <input type="hidden" id="hdnCatName" value="{{ products.0.main_menu.title }}">
+            <input type="hidden" id="hdnCatSlug" value="{{ products.0.main_menu.slug }}">
+        </nav>
+
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main">
+                {% include 'site/product/include/onerilenUrunler.html' %}
+                <header class="page-header">
+                    <h1 class="page-title">{{ products.0.main_menu.title }} {{ products.0.sub_menu.title }}</h1>
+                    <p class="woocommerce-result-count">Toplam <span id="spTotalProduct">{{ proCount }}</span> üründen <span id="spShowingProduct">{{ products.object_list|length }}</span> arası gösteriliyor</p>
+                    <input type="hidden" id="curPage" value="1">
+                    <input type="hidden" id="pageCount" value="{{ products.paginator.num_pages }}">
+                    <input type="hidden" id="pageTrigger" value="False">
+                </header>
+                <div class="shop-control-bar">
+                    <ul class="shop-view-switcher nav nav-tabs" role="tablist">
+                        <li class="nav-item"><a class="nav-link active" data-toggle="tab" title="Grid View" href="#grid"><i
+                                class="fa fa-th"></i></a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" title="Grid Extended View"
+                                                href="#grid-extended"><i class="fa fa-align-justify"></i></a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" title="List View" href="#list-view"><i
+                                class="fa fa-list"></i></a></li>
+                        <li class="nav-item"><a class="nav-link " data-toggle="tab" title="List View Small"
+                                                href="#list-view-small"><i class="fa fa-th-list"></i></a></li>
+                    </ul>
+                    <form class="woocommerce-ordering" method="get">
+                        <select name="orderby" class="orderby" onchange="productFilterbyAttrBrands()">
+                            <option value="default" selected='selected'>Varsayılan Sıralama</option>
+                            <option value="popularity">Popülerliğe göre sırala</option>
+                            <option value="date">Yeniliğe göre sırala</option>
+                            <option value="price">Fiyata göre: düşükten yükseğe</option>
+                            <option value="price-desc">Fiyata göre: yüksekten düşüğe</option>
+                        </select>
+                    </form>
+                    <form class="form-electro-wc-ppp">
+                        <select name="ppp" class="electro-wc-wppp-select c-select">
+                            <option value="1">Göster 1</option>
+                            <option value="2">2</option>
+                            <option selected="selected" value="3">3</option>
+                            <option value="5">5</option>
+                            <option value="30">30</option>
+                            <option value="50">50</option>
+                        </select>
+                    </form>
+                    <nav class="electro-advanced-pagination">
+                        <form method="get" class="form-adv-pagination">
+                            <input id="goto-page" size="2" min="1" max="{{ products.paginator.num_pages }}" step="{{ products.number }}" type="number" class="form-control" value="{{ products.number }}"/>
+                        </form>
+                        / <span class="spTotalPage">{{ products.paginator.num_pages }}</span><a class="next page-numbers" href="javascript:void(0);"
+                                                                                                onclick="goToPage(document.getElementById('goto-page').value);">&rarr;</a>
+
+                    </nav>
+                </div>
+                <!-- MULTIPLE PRODUCT LIST -->
+                {% include 'site/product/include/productTabPanel.html' %}
+                <!--END  MULTIPLE PRODUCT LIST -->
+                <div class="shop-control-bar-bottom">
+                    <p class="woocommerce-result-count">Toplam <span id="spTotalProduct">{{ proCount }}</span> üründen <span id="spShowingProduct">{{ products.object_list|length }}</span> arası gösteriliyor</p>
+                    {% if products.has_other_pages %}
+                        <nav class="woocommerce-pagination">
+                            <ul class="page-numbers">
+                                <li><a href="javascript:void(0);" onclick="pagination(this)" class="page-numbers" name="btnPrevPage" id="btnPrevPage" {% if not products.has_previous %} style="display: none" {% endif %}
+                                       type="prev"> < </a></li>
+                                <li><span class="page-numbers current"><b id="spCurPage">{{ products.number }}</b> / <b class="spTotalPage">{{ products.paginator.num_pages }}</b></span></li>
+                                <li><a href="javascript:void(0);" onclick="pagination(this)" name="btnNextPage" id="btnNextPage" class="page-numbers" type="next"> > </a></li>
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </div>
+            </main><!-- #main -->
+        </div><!-- #primary -->
+        <div id="sidebar" class="sidebar" role="complementary">
+            {% showLeftCategorySidebar products.0.main_menu.slug %}
+            {% include 'site/product/include/productFilter.html' %}
+            <aside class="widget widget_text">
+                <div class="textwidget">
+                    <a href="#"><img src="../../assets/images/banner/ad-banner-sidebar.jpg" alt="Banner"></a>
+                </div>
+            </aside>
+            {% include 'site/product/include/leftLatestProduct.html' %}
+        </div>
+
+    </div><!-- .container -->
+{% endblock %}
+{% block script %}
+    <script>
+        $(document).ready(function () {
+            $("#goto-page").keyup(function () {
+                $("#RedirectNextPageNumber").attr("href", "?sayfa=" + $(this).val())
+            })
+        })
+    </script>
+    <script type="text/javascript" src="{% static 'site/productFilter.js' %}"></script>
+{% endblock %}
+
+

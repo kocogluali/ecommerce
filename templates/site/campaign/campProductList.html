@@ -1,0 +1,86 @@
+{% extends 'site/base/base.html' %}
+{% block body %}
+    <div class="container" data-inline-type="archive tax-product_cat term-smart-phones-tablets term-126 woocommerce woocommerce-page woocommerce-js left-sidebar electro-compact wpb-js-composer js-comp-ver-5.4.7 vc_responsive  pace-done">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'homeView' %}">Anasayfa</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>{{ camps.title|title }}</nav>
+        <div class="container-fluid">
+            <div>
+                <main id="main" class="site-main">
+
+                    <input type="hidden" id="curAddToWishID" value="0">
+                    <header class="page-header">
+                        <h1 class="page-title">{{ camps.title }}</h1>
+                    </header>
+
+                    <div class="shop-control-bar">
+                        <ul class="shop-view-switcher nav nav-tabs" role="tablist">
+                            <li class="nav-item"><a class="nav-link active" data-toggle="tab" title="Grid View" href="#grid"><i
+                                    class="fa fa-th"></i></a></li>
+                            <li class="nav-item"><a class="nav-link " data-toggle="tab" title="Grid Extended View"
+                                                    href="#grid-extended"><i class="fa fa-align-justify"></i></a></li>
+                            <li class="nav-item"><a class="nav-link " data-toggle="tab" title="List View" href="#list-view"><i
+                                    class="fa fa-list"></i></a></li>
+                            <li class="nav-item"><a class="nav-link " data-toggle="tab" title="List View Small"
+                                                    href="#list-view-small"><i class="fa fa-th-list"></i></a></li>
+                        </ul>
+                        <form class="woocommerce-ordering" method="get">
+                            <select name="orderby" id="orderby" class="orderby" onchange="this.form.submit()">
+                                <option value="default" selected='selected'>Varsayılan Sıralama</option>
+                                <option value="popularity">Popülerliğe göre sırala</option>
+                                <option value="date">Yeniliğe göre sırala</option>
+                                <option value="price">Fiyata göre: düşükten yükseğe</option>
+                                <option value="price-desc">Fiyata göre: yüksekten düşüğe</option>
+                            </select>
+                            <select name="ppp" id="ppp" class="electro-wc-wppp-select c-select" onchange="this.form.submit()">
+                                <option value="1">Göster 1</option>
+                                <option value="2">2</option>
+                                <option selected="selected" value="3">3</option>
+                                <option value="5">5</option>
+                                <option value="30">30</option>
+                                <option value="50">50</option>
+                            </select>
+                        </form>
+                    </div>
+                    <ul data-view="grid" data-toggle="shop-products" class="products columns-4">
+
+                        {% include 'site/product/include/productTabPanel.html' %}
+                    </ul>
+                    {% if products.has_other_pages %}
+                        <nav class="woocommerce-pagination">
+                            <ul class="page-numbers">
+                                {% if products.has_previous %}
+                                    <li><a href="?sayfa={{ products.previous_page_number }}&ppp={{ request.GET.ppp }}&orderby={{ request.GET.orderby }}" class="page-numbers"> < </a></li>
+                                {% endif %}
+                                <li><span class="page-numbers current">{{ products.number }} / {{ products.paginator.num_pages }}</span></li>
+                                {% if products.has_next %}
+                                    <li><a href="?sayfa={{ products.next_page_number }}&ppp={{ request.GET.ppp }}&orderby={{ request.GET.orderby }}" class="page-numbers"> > </a></li>
+                                {% endif %}
+                            </ul>
+                        </nav>
+                    {% endif %}
+                </main><!-- #main -->
+            </div><!-- #primary -->
+        </div>
+    </div>
+{% endblock %}
+{% block script %}
+    <script>
+        $("div[role='tabpanel'] ul").removeClass("columns-3").addClass("columns-4")
+        var orderBy = getUrlVars()["orderby"];
+        var perPageItem = getUrlVars()["ppp"];
+        if (orderBy)
+            $("select#orderby").val(orderBy);
+        if (perPageItem)
+            $("select#ppp").val(perPageItem);
+
+        function getUrlVars() {
+            var vars = [], hash;
+            var hashes = window.location.href.slice(window.location.href.indexOf('?') + 1).split('&');
+            for (var i = 0; i < hashes.length; i++) {
+                hash = hashes[i].split('=');
+                vars.push(hash[0]);
+                vars[hash[0]] = hash[1];
+            }
+            return vars;
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'site/base/base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load proTags %}
+{% block body %}
+    <div class="container">
+        <nav class="woocommerce-breadcrumb">
+            <a href="{% url 'homeView' %}">Anasayfa</a>
+            <span class="delimiter"><i class="fa fa-angle-right"></i></span>
+            <a href="{% url 'shop:product_list' urun.main_menu.slug %}">{{ urun.main_menu|title }}</a>
+            <span class="delimiter"><i class="fa fa-angle-right"></i></span>
+            <a href="{% url 'shop:product_list' urun.sub_menu.slug %}">{{ urun.sub_menu|title }}</a>
+            <span class="delimiter"><i class="fa fa-angle-right"></i></span>{{ urun.title }}
+        </nav>
+
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="woocommerce-{% if message.tags == "success" %}message{% else %}info{% endif %}" role="alert">
+                            <a href="{% url 'accounts:myBasket' %}" class="button wc-forward">Sepeti Görüntüle</a>
+
+                            {{ message }}
+
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
+                <div class="product">
+                    <div class="single-product-wrapper">
+                        <div class="product-images-wrapper">
+                            {% if camp %}
+                                <span class="onsale">{{ camp.title }} <br> %{{ camp.discPercentage }} indirim</span>
+                            {% endif %}
+                            <div class="images electro-gallery">
+                                <div class="thumbnails-single owl-carousel">
+                                    <a href="{{ urun.image.url }}" class="zoom" title="{{ urun.title }}"
+                                       data-rel="prettyPhoto[product-gallery]">
+                                        {% thumbnail urun.image '470x705' crop='center' as im %}
+                                            <img src="{% static 'images/blank.gif' %}" data-echo="{{ im.url }}" class="wp-post-image" alt="{{ urun.title }}">
+                                        {% endthumbnail %}
+                                    </a>
+                                    {% for g in gallery %}
+                                        <a href="{{ g.image.url }}" class="zoom" title="{{ g.title }}"
+                                           data-rel="prettyPhoto[product-gallery]">
+                                            {% thumbnail g.image '470x705' crop='center' as im %}
+                                                <img src="{% static 'images/blank.gif' %}" data-echo="{{ im.url }}" class="wp-post-image" alt="{{ g.title }}">
+                                            {% endthumbnail %}
+                                        </a>
+                                    {% endfor %}
+
+
+                                </div><!-- .thumbnails-single -->
+
+                                <div class="thumbnails-all columns-5 owl-carousel">
+                                    <a href="{{ urun.image.url }}" class="first" title="{{ urun.title }}">
+                                        {% thumbnail urun.image '85x130' crop='center' as im %}
+                                            <img src="{% static 'images/blank.gif' %}"
+                                                 data-echo="{{ im.url }}"
+                                                 class="wp-post-image" alt="{{ urun.title }}"></a>
+                                        {% endthumbnail %}
+                                    {% for g in gallery %}
+                                        <a href="{{ g.image.url }}" class="first" title="{{ g.title }}">
+                                            {% thumbnail g.image '85x130' crop='center' as im %}
+                                                <img src="{% static 'images/blank.gif' %}"
+                                                     data-echo="{{ im.url }}"
+                                                     class="wp-post-image" alt="{{ g.title }}">
+                                            {% endthumbnail %}
+                                        </a>
+                                    {% endfor %}
+
+                                </div><!-- .thumbnails-all -->
+                            </div><!-- .electro-gallery -->
+                        </div><!-- /.product-images-wrapper -->
+
+                        <div class="summary entry-summary">
+                            <span class="loop-product-categories">
+                                <a href="{% url 'shop:product_list' urun.sub_menu.slug %}" rel="tag">{{ urun.sub_menu|title }}</a>
+                            </span><!-- /.loop-product-categories -->
+                            <h1 itemprop="name" class="product_title entry-title">{{ urun.title|title }}</h1>
+                            <div class="woocommerce-product-rating">
+                                <div class="star-rating" title="5 Üzerinden {{ comments|calcCommentAverage:comments }}">
+                                    <span style="width: {{ comments|calcCommentAverage:comments|multiply:20|floatformat }}%">
+                                        <strong itemprop="ratingValue" class="rating">4.33</strong>
+                                        out of <span itemprop="bestRating">5</span>				based on
+                                        <span itemprop="ratingCount" class="rating">3</span>
+                                        customer ratings
+                                    </span>
+                                </div>
+                                <a href="#reviews" class="woocommerce-review-link">(<span itemprop="reviewCount" class="count"></span>{% if comments.count > 0 %}{{ comments.count }} müşteri yorumu{% else %}Henüz yorum yok{% endif %})</a>
+                            </div><!-- .woocommerce-product-rating -->
+
+                            <div class="brand">
+                                <a href="markasayfası">
+                                    {% thumbnail urun.brand.image '200x60' crop='center' as im %}
+                                        <img src="{{ im.url }}" alt="{{ urun.title }}"/>
+                                    {% endthumbnail %}
+                                </a>
+                            </div><!-- .brand -->
+
+                            <div class="availability {% if urun.stock < 10 %} out-of-stock  {% else %} in-stock {% endif %}">&nbsp; Stok : <span id="urun_stok">{{ urun.stock }}</span></div>
+                            <!-- .availability -->
+
+                            <hr class="single-product-title-divider"/>
+
+                            <div class="action-buttons">
+                                <input type="hidden" id="curAddToWishID" value="0">
+                                <a href="#" class="add_to_wishlist" name="{{ urun.id }},{{ request.user.id }}">
+                                    Favorilerim
+                                </a>
+                                <a href="#" class="add-to-compare-link" data-product_id="2452">Compare</a>
+                            </div><!-- .action-buttons -->
+                            <div itemprop="description">
+                                <ul>
+                                    {% for a in attr %}
+                                        <tr>
+                                            <li>{{ a.parent_attr.name }} : {% for sub in a.sub_attr.all %} {{ sub }} {% if not forloop.last or forloop.first %} {% if  a.sub_attr.all|length > 1 %} / {% endif %} {% endif %}{% endfor %}
+                                        </tr>
+                                    {% endfor %}
+                                </ul>
+                                <p><strong>Ürün Kodu </strong>: {{ urun.code }}</p>
+                            </div><!-- .description -->
+
+                            <div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+                                <p class="price">
+                            <span class="electro-price">
+                            <ins><span class="amount" id="urun_fiyat">&#8378; {{ discPrice }}</span></ins>
+                                {% if discPrice != urun.price %}
+                                    <del><span class="amount" id="normal_fiyat">&#8378; {{ urun.price }}</span></del>
+                                {% endif %}
+
+                            </span>
+                                </p>
+
+                                <meta itemprop="price" content="{{ urun.price }}"/>
+                                <meta itemprop="priceCurrency" content="TL"/>
+                                <link itemprop="availability" href="http://schema.org/InStock"/>
+
+                            </div><!-- /itemprop -->
+
+                            <form class="variations_form cart" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" id="product_id" value="{{ urun.id }}">
+                                <table class="variations" id="product_varyant">
+                                    <tbody>
+                                    {% for a in attr %}
+                                        <tr>
+                                            <td class="label"><label>{{ a.parent_attr.name }}</label></td>
+                                            <td class="value">
+                                                <select class="" id="selvaryant{{ a.id }}" name="selvaryant{{ a.id }}" required>
+                                                    <option value="">Seçiniz</option>
+                                                    {% for sub in a.sub_attr.all %}
+                                                        <option value="{{ sub.id }}">{{ sub.title }}</option>
+                                                    {% endfor %}
+                                                </select>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+
+                                <div class="single_variation_wrap">
+                                    <div class="woocommerce-variation single_variation"></div>
+                                    <div class="woocommerce-variation-add-to-cart variations_button">
+                                        <div class="quantity">
+                                            <label>Quantity:</label>
+                                            <input type="number" name="qty" id="qty" value="1" title="Adet" class="input-text qty text"/>
+                                        </div>
+                                        <button type="submit" class="single_add_to_cart_button button">Sepete Ekle</button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div><!-- .summary -->
+                    </div><!-- /.single-product-wrapper -->
+
+                    <!-- Detail And Other Tabs -->
+                    {% include 'site/product/include/productDetailTABS.html' %}
+                </div><!-- /.product -->
+
+            </main><!-- /.site-main -->
+        </div><!-- /.content-area -->
+    </div><!-- /.container -->
+
+{% endblock %}
+{% block script %}
+    <script type="text/javascript" src="{% static 'site/productFilter.js' %}"></script>
+{% endblock %}
+

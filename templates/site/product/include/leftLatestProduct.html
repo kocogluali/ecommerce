@@ -1,0 +1,28 @@
+{% load thumbnail %}
+{% load proTags %}
+<aside class="widget widget_products">
+    <h3 class="widget-title">Latest Products</h3>
+    <ul class="product_list_widget">
+        {% for p in lastProduct %}
+            <li>
+                {% thumbnail p.image '180x180' crop='center' as im %}
+                    <a href="{% url 'shop:product_detail' p.main_menu__slug p.slug %}" title="{{ p.title }}">
+                        <img width="180" height="180" src="{{ im.url }}"
+                             class="wp-post-image" alt="{{ p.title }}"/><span class="product-title">{{ p.title }}</span>
+                    </a>
+                {% endthumbnail %}
+                <span class="electro-price">
+                {% with p.id|getProDiscedPricebyProID as discPrice %}
+                    {% if discPrice != 0 %}
+                        <ins><span class="amount">&#8378; {{ discPrice }}</span></ins>
+                        <del><span class="amount">&#8378;{{ p.price }}</span></del>
+                    {% else %}
+                        <ins><span class="amount">&#8378; {{ p.price }}</span></ins>
+                    {% endif %}
+
+                {% endwith %}
+                </span>
+            </li>
+        {% endfor %}
+    </ul>
+</aside>

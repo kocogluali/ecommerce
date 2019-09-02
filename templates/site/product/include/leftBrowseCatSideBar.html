@@ -1,0 +1,23 @@
+{% load hometags %}
+<aside class="widget woocommerce widget_product_categories electro_widget_product_categories">
+    <ul class="product-categories ">
+        <li class="product_cat"><span>Kategorileri Keşfet</span>
+            <ul>
+                {% for c in cats %}
+                    <li class="cat-item cat-item-137"><a href="{% url 'shop:product_list' c.slug %}"><span class="child-indicator"></span>{{ c.title }}</a>
+                        {% with subCats|filterSubAttr:c.id as subAt %}
+                            <span class="count">({{ subAt.count }})</span>
+                            <ul class="children" style="display: none;">
+                                {% for sub in subAt %}
+                                    <li class="cat-item cat-item-139">
+                                        <a href="{% url 'shop:product_list' sub.slug %}"><span class="no-child"></span>{{ sub.title }}</a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                            </li>
+                        {% endwith %}
+                {% endfor %}
+            </ul>
+        </li>
+    </ul>
+</aside>

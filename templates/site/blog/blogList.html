@@ -1,0 +1,83 @@
+{% extends 'site/base/base.html' %}
+{% load thumbnail %}
+{% block body %}
+    <div class="container" data-inline-type="blog woocommerce-js right-sidebar blog-list electro-compact wpb-js-composer js-comp-ver-5.5.5 vc_responsive  pace-done">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'homeView' %}">Anasayfa</a>
+
+
+            <span class="delimiter">
+            <i class="fa fa-angle-right"></i></span><a href="{% url 'blog:blogListAll' %}">Blog</a>
+            {% if category != "all" %}
+                <span class="delimiter">
+                    &nbsp;<i class="fa fa-angle-right"></i>
+                    <a href="{% url 'blog:blogList' category %}">&nbsp;&nbsp; {{ category|title }}</a>
+                </span>
+            {% endif %}
+        </nav>
+        <div class="site-content-inner">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+                    {% for p in posts %}
+                        <article id="post-2415"
+                                 class=" post-2415 post type-post status-publish format-gallery has-post-thumbnail hentry category-design category-technology category-uncategorized tag-amazon-like tag-awesome tag-bootstrap tag-buy-it tag-clean-design tag-electronics tag-theme tag-woocommerce tag-wordpress post_format-post-format-gallery">
+                            <div class="media-attachment"><a href="{{ p.get_url }}">
+                                {% thumbnail p.image '270x170' crop='center' as im %}
+                                    <img width="1144" height="760"
+                                         src="{{ im.url }}"
+                                         class="attachment-electro_blog_small size-electro_blog_small wp-post-image" alt="{{ p.title }}"
+                                         sizes="(max-width: 1144px) 100vw, 1144px">
+                                {% endthumbnail %}
+                            </a></div>
+                            <div class="content-body">
+                                <header class="entry-header"><h1 class="entry-title"><a href="{{ p.get_url }}" rel="bookmark">{{ p.title }}</a></h1>
+                                    <div class="entry-meta">
+                                        <span class="cat-links">
+                                               {% if  p.tags %}
+                                                   {% for key in p.tags_split %}
+                                                       <a href="{{ t }}" rel="{{ key }}">{{ key }}</a>,
+                                                   {% endfor %}
+                                               {% endif %}
+                                        </span>
+                                        <span class="posted-on">
+                                            <a href="{{ p.get_url }}" rel="bookmark">
+                                                <time class="entry-date published updated" datetime="{{ p.publishing_date|date:'c' }}">{{ p.publishing_date }}</time>
+                                            </a>
+                                        </span>
+                                    </div>
+                                </header>
+                                <div class="entry-content"><p>{{ p.content|slice:"200" }}</p></div>
+                                <div class="post-readmore"><a href="{{ p.get_url }}" class="btn btn-primary">Daha Fazla Oku</a></div>
+                                <span class="comments-link"><a href="{{ p.get_url }}#comments">{{ p.get_comment_count }}</a></span></div>
+                        </article>
+                    {% endfor %}
+                </main>
+            </div>
+            <div id="sidebar" class="sidebar-blog" role="complementary">
+
+                <aside id="categories-3" class="widget widget_categories"><h3 class="widget-title">Kategoriler</h3>
+                    <ul>
+                        <li class="cat-item"><a href="{% url 'blog:blogListAll' %}">Tüm Gönderiler</a></li>
+                        {% for c in cats %}
+                            <li class="cat-item cat-item-17"><a href="{{ c.get_url }}">{{ c.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+                <aside id="electro_recent_posts_widget-1" class="widget electro_recent_posts_widget"><h3 class="widget-title">Son Gönderiler</h3>
+                    <ul>
+                        <li>
+                            <a class="post-thumbnail" href="https://demo2.madrasthemes.com/electro/2016/03/04/robot-wars-now-closed-post-with-gallery/">
+                                <img width="150" height="150"
+                                     src="https://demo2.madrasthemes.com/electro/wp-content/uploads/2016/02/1-150x150.jpg"
+                                     class="attachment-thumbnail size-thumbnail wp-post-image" alt=""
+                                     srcset="https://demo2.madrasthemes.com/electro/wp-content/uploads/2016/02/1-150x150.jpg 150w, https://demo2.madrasthemes.com/electro/wp-content/uploads/2016/02/1-100x100.jpg 100w"
+                                     sizes="(max-width: 150px) 100vw, 150px">
+                            </a>
+                            <div class="post-content"><a class="post-name" href="https://demo2.madrasthemes.com/electro/2016/03/04/robot-wars-now-closed-post-with-gallery/">Robot Wars – Post with Gallery</a> <span
+                                    class="post-date">March 4, 2016</span></div>
+                        </li>
+                    </ul>
+                </aside>
+            </div>
+        </div>
+    </div>
+{% endblock %}

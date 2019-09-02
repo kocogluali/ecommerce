@@ -1,0 +1,180 @@
+{% extends 'site/base/base.html' %}
+{% load static %}
+{% load thumbnail %}
+{% load accoTags %}
+{% load proTags %}
+{% load hometags %}
+{% block meta %}
+
+
+{% endblock %}
+{% block body %}
+    <div class="container" data-inline-type="page home page-template-default">
+        <input type="hidden" id="basketID" value="{{ sepetim.0.parent_sepet.id }}">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'homeView' %}">Anasayfa</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Sepetim</nav>
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main">
+                <article class="page type-page status-publish hentry">
+                    <header class="entry-header"><h1 itemprop="name" class="entry-title">Sepetim</h1></header><!-- .entry-header -->
+                    {% if sepetim %}
+                        <form id="formBasket">
+
+                            <table class="shop_table shop_table_responsive cart">
+                                <thead>
+                                <tr>
+                                    <th class="product-remove">&nbsp;</th>
+                                    <th class="product-thumbnail">&nbsp;</th>
+                                    <th class="product-name">Ürün</th>
+                                    <th class="product-price">Fiyat</th>
+                                    <th class="product-quantity">Adet</th>
+                                    <th class="product-subtotal">Toplam</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for s in sepetim %}
+                                    <tr class="cart_item">
+                                        <td class="product-remove">
+                                            <a class="remove" href="javascript:void(0)">×</a>
+                                            <input type="hidden" name="sepetItemID" value="{{ s.id }}">
+                                        </td>
+                                        <td class="product-thumbnail">
+                                            {% thumbnail s.parent_product.image '180x180' crop="center" as im %}
+                                                <a href="{{ s.parent_product.get_url }}"><img width="180" height="180" src="{{ im.url }}"
+                                                                                              alt="{{ s.parent_product.title }}"></a>
+                                            {% endthumbnail %}
+                                        </td>
+                                        <td data-title="Product" class="product-name">
+                                            <a href="{{ s.parent_product.get_url }}">{{ s.parent_product.title }}</a>
+                                            <p style="color: #6b6b6b;font-size: 13px">{{ s.attr }}</p>
+                                        </td>
+                                        <td data-title="Price" class="product-price">
+                                            {% with s.parent_product.id|get_product_variant:s.details as variantPrice %}
+                                                {% with s.parent_product|getDiscPrice  as discPrice %}
+                                                    {% if discPrice > 0 %}
+                                                        <span class="amount">&#8378;
+                                                        <span data-model-name="basketItemPrice" style="color: green;">{{ s.parent_product.price|cikarDecimalPrice:discPrice|addDecimalPrice:variantPrice }}</span>
+                                                    </span>
+                                                        <del><span class="amount">&#8378; {{ s.parent_product.price|addDecimalPrice:variantPrice }}</span></del>
+                                                    {% else %}
+                                                        <span class="amount">&#8378; {{ s.parent_product.price|addDecimalPrice:variantPrice }}</span>
+                                                    {% endif %}
+                                                {% endwith %}
+                                            {% endwith %}
+                                        </td>
+                                        <td data-title="Quantity" class="product-quantity">
+                                            <div class="quantity buttons_added"><input type="button" name="qtyMinMax" class="minus" value="-">
+                                                <label>Adet:</label>
+                                                <input type="number" min="1" max="{{ s.parent_product.stock }}" class="input-text qty text" data-model-name="{{ s.id }}" title="Adet" value="{{ s.qty }}" name="basketItemQty"
+                                                       step="1" required>
+                                                <input type="button" class="plus" name="qtyMinMax" value="+">
+                                            </div>
+                                        </td>
+                                        <td data-title="Total" class="product-subtotal">
+                                            <span class="amount">&#8378;<span data-model-name="basketItemTotalPrice"> {{ s.totalPrice }}</span></span>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                <tr>
+                                    <td class="actions" colspan="6">
+                                        {% if sepetim %}
+                                            <div class="coupon">
+                                                <label for="coupon_code">Kupon:</label> <input type="text" placeholder="Kupon Kodu" value="" id="coupon_code" class="input-text" name="coupon_code">
+                                                <input type="button" value="Kuponu Uygula" name="apply_coupon" class="button" data-model-name="{{ sepetim.0.parent_sepet.id }}"/>
+                                            </div>
+                                        {% endif %}
+                                        {% if sepetim %}
+                                            <input type="button" value="Sepeti Güncelle" name="update_cart" class="button">
+                                        {% else %}
+                                            <a href="{% url 'homeView' %}" class="button"> Alışverişe Devam Et</a>
+                                        {% endif %}
+
+                                        <input type="submit" value="not update" id="fake_update_cart" style="display: none">
+                                        <div class="wc-proceed-to-checkout">
+                                            <a class="checkout-button button alt wc-forward" href="{% url 'accounts:checkout' %}">Ödeme Yap</a>
+                                        </div>
+                                        <input type="hidden" value="1eafc42c5e" name="_wpnonce" id="_wpnonce"><input type="hidden" value="/electro/cart/" name="_wp_http_referer">
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+
+                            <div class="cart-collaterals">
+                                <div class="cart_totals ">
+                                    {% if sepetim %}
+                                        <h2>Sepet Toplam</h2>
+
+
+
+                                        <table class="shop_table shop_table_responsive">
+                                            <tbody>
+                                            <tr class="cart-subtotal">
+                                                <th>Ara Toplam</th>
+                                                <td data-title="subTotal"><span class="amount">&#8378; <span id="cartSubTotal"> {{ basketTotal }}</span></span></td>
+                                            </tr>
+                                            {% if coupon %}
+                                                <tr class="">
+                                                    <th>Kupon İndirimi</th>
+                                                    <td data-title="subTotal"><span class="amount"> {{ coupon.title }} &nbsp;&nbsp; &#8378; <span id="cartCoupon"> {{ coupon.disc_price }}</span></span></td>
+                                                </tr>
+                                            {% endif %}
+
+                                            <tr class="shipping">
+                                                <th>Nakliye</th>
+                                                <td data-title="Shipping">Sabit Ücret: <span class="amount">&#8378; <span id="cargoPrice">{{ sepetim.0.parent_sepet.cargo.price }}</span> - {{ sepetim.0.parent_sepet.cargo.title }}</span> <input
+                                                        type="hidden" class="shipping_method"
+                                                        value="international_delivery"
+                                                        id="shipping_method_0">
+                                                    <p><a data-toggle="collapse" aria-controls="calculator" href="#calculator" aria-expanded="false" class="shipping-calculator-button">Kargoyu Değiştir</a></p>
+                                                    <div id="calculator" class="shipping-calculator-form collapse">
+                                                        <p id="calc_shipping_country_field" class="form-row form-row-wide">
+                                                            <select rel="calc_shipping_state" class="country_to_state" id="calc_shipping_country" name="calc_shipping_country">
+                                                                {% for cargo in cargos %}
+                                                                    <option value="{{ cargo.id }}" data-value="{{ cargo.price }}" {% if sepetim.0.parent_sepet.cargo.id == cargo.id %} selected="selected"{% endif %}> {{ cargo.title }} |
+                                                                        &#8378; {{ cargo.price }}
+                                                                        | {{ cargo.delivery_time }}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </p>
+                                                        <p>
+                                                            {% if sepetim %}
+                                                                <input class="button" value="Sepet Tutarı Güncelle" name="update_cart" type="button">
+                                                            {% endif %}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                            </tr>
+
+                                            <tr class="order-total">
+                                                <th>Toplam</th>
+                                                {% with sepetim.0.parent_sepet.coupon.code|getCouponDiscPrice as coupDiscPrice %}
+                                                    <td data-title="Total"><strong><span class="amount">&#8378;<span
+                                                            id="cartTotal"> {{ sepetim.0.parent_sepet.sepet_tutar|addDecimalPrice:sepetim.0.parent_sepet.cargo.price|cikarDecimalPrice:coupDiscPrice }}</span> </span></strong></td>
+                                                {% endwith %}
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    {% endif %}
+                                    <div class="wc-proceed-to-checkout">
+                                        <a class="checkout-button button alt wc-forward" href="checkout.html">Proceed to Checkout</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="woocommerce">
+                            <p class="cart-empty">Sepetin boş görünüyor.</p>
+                            <p class="return-to-shop">
+                                <a href="{% url 'homeView' %}" class="button"> Alışverişe Devam Et</a>
+                            </p>
+                        </div>
+
+                    {% endif %}
+
+                </article>
+            </main><!-- #main -->
+        </div><!-- #primary -->
+    </div>
+{% endblock %}
+{% block script %}
+
+{% endblock %}

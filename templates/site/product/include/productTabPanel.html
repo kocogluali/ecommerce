@@ -1,0 +1,226 @@
+{% load thumbnail %}
+{% load proTags %}
+<div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="grid" aria-expanded="true">
+        <ul class="products columns-3">
+            {% for p in products %}
+                <li class="product">
+                    <div class="product-outer">
+                        <div class="product-inner">
+                            <span class="loop-product-categories"><a href="{% url 'shop:product_list' p.sub_menu.slug %}" rel="tag">{{ p.sub_menu.title }}</a></span>
+                            <a href="{{ p.get_url }}">
+                                <h3>{{ p.title }}</h3>
+                                <div class="product-thumbnail">
+                                    {% thumbnail p.image '240x220' crop='center' as im %}
+                                        <img data-echo="{{ im.url }}"
+                                             src="{{ im.url }}" alt="{{ p.title }}">
+                                    {% endthumbnail %}
+                                </div>
+                            </a>
+                            <div class="price-add-to-cart">
+                                <span class="price">
+                                    <span class="electro-price">
+                                        {% if p.disc_price %}
+                                            <ins><span class="amount">&#8378; {{ p.disc_price }}</span></ins>
+                                            <del><span class="amount">&#8378; {{ p.price }}</span></del>
+                                        {% elif p.disc_group %}
+                                            <ins><span class="amount">&#8378; {{ p.price|calcDiscountPrice:p.disc_group.discPercentage }}</span></ins>
+                                            <del><span class="amount">&#8378; {{ p.price }}</span></del>
+                                        {% else %}
+                                            <span class="amount">&#8378; {{ p.price }}</span>
+                                        {% endif %}
+                                    </span>
+                                </span>
+                                <a rel="nofollow" href="{{ p.get_url }}" class="button add_to_cart_button">Add
+                                    to cart</a>
+                            </div><!-- /.price-add-to-cart -->
+
+                            <div class="hover-area">
+                                <div class="action-buttons">
+                                    <a href="javascript:void(0);" rel="nofollow" class="add_to_wishlist" name="{{ p.id }},{{ request.user.id }}">Wishlist</a>
+                                    <a href="#" class="add-to-compare-link">Compare</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.product-inner -->
+                    </div><!-- /.product-outer -->
+                </li>
+            {% endfor %}
+
+
+        </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="grid-extended" aria-expanded="true">
+        <ul class="products columns-3">
+            {% for p in products %}
+                <li class="product">
+                    <div class="product-outer">
+                        <div class="product-inner">
+                            <span class="loop-product-categories"><a href="{% url 'shop:product_list' p.sub_menu.slug %}" rel="tag">{{ p.sub_menu.title }}</a></span>
+                            <a href="{{ p.get_url }}">
+                                <h3>{{ p.title }}</h3>
+                                <div class="product-thumbnail">
+                                    {% thumbnail p.image '240x220' crop='center' as im %}
+                                        <img class="wp-post-image" data-echo="{{ im.url }}"
+                                             src="{{ im.url }}" alt="{{ p.title }}">
+                                    {% endthumbnail %}
+                                </div>
+
+                                <div class="product-rating">
+                                    <div title="Rated 4 out of 5" class="star-rating"><span
+                                            style="width:80%"><strong class="rating">4</strong> out of 5</span>
+                                    </div>
+                                    (3)
+                                </div>
+
+                                <div class="product-short-description">
+                                    {{ p.info|safe|slice:"150" }}..
+                                </div>
+
+                                <div class="product-sku">Ürün Kodu : {{ p.code }}</div>
+                            </a>
+                            <div class="price-add-to-cart">
+                            <span class="price">
+                                <span class="electro-price">
+                                    <ins><span class="amount">&#8378; {{ p.price }}</span></ins>
+                                </span>
+                            </span>
+                                <a rel="nofollow" href="{% url 'shop:product_detail' p.sub_menu.slug p.slug %}" class="button add_to_cart_button">
+                                    Add to cart</a>
+                            </div><!-- /.price-add-to-cart -->
+                            <div class="hover-area">
+                                <div class="action-buttons">
+                                    <a href="#" rel="nofollow" class="add_to_wishlist" name="{{ p.id }},{{ request.user.id }}">Wishlist</a>
+                                    <a href="#" class="add-to-compare-link">Compare</a>
+                                </div>
+                            </div>
+
+                        </div><!-- /.product-inner -->
+                    </div><!-- /.product-outer -->
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="list-view" aria-expanded="true">
+        <ul class="products columns-3">
+            {% for p in products %}
+                <li class="product list-view">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{% url 'shop:product_detail' p.sub_menu.slug p.slug %}">
+                                {% thumbnail p.image '300x210' crop='center' as im %}
+                                    <img class="wp-post-image" data-echo="{{ im.url }}"
+                                         src="{{ im.url }}" alt="{{ p.title }}">
+                                {% endthumbnail %}
+                            </a>
+                        </div>
+                        <div class="media-body media-middle">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                <span class="loop-product-categories">
+                                    <a rel="tag" href="{% url 'shop:product_list' p.sub_menu.slug %}">{{ p.sub_menu__title }}</a></span><a
+                                        href="{% url 'shop:product_detail' p.sub_menu.slug p.slug %}"><h3>{{ p.title }}</h3>
+                                    <div class="product-rating">
+                                        <div title="Rated 4 out of 5" class="star-rating"><span
+                                                style="width:80%"><strong
+                                                class="rating">4</strong> out of 5</span></div>
+                                        (3)
+                                    </div>
+                                    <div class="product-short-description">
+                                        {{ p.info|safe|slice:"150" }}..
+                                    </div>
+                                </a>
+                                </div>
+                                <div class="col-xs-12">
+
+                                    <div class="availability in-stock">Stok : <span>{{ p.stock }}</span></div>
+                                    <span class="price"><span class="electro-price"><span
+                                            class="amount">&#8378; {{ p.price }}</span></span></span>
+                                    <a class="button product_type_simple add_to_cart_button ajax_add_to_cart"
+                                       data-product_sku="{{ p.code }}" data-product_id="{{ p.id }}" data-quantity="1"
+                                       href="{% url 'shop:product_detail' p.sub_menu.slug p.slug %}" rel="nofollow">Add to cart</a>
+                                    <div class="hover-area">
+                                        <div class="action-buttons">
+                                            <div class="yith-wcwl-add-to-wishlist add-to-wishlist-2706">
+                                                <a class="add_to_wishlist" name="{{ p.id }},{{ request.user.id }}" data-product-type="simple"
+                                                   data-product-id="{{ p.id }}" rel="nofollow" href="#">Wishlist</a>
+                                                <div
+                                                        class="yith-wcwl-wishlistaddedbrowse hide">
+                                                    <span class="feedback">Product added!</span>
+                                                    <a rel="nofollow" href="#">Wishlist</a>
+                                                </div>
+                                                <div
+                                                        class="yith-wcwl-wishlistexistsbrowse hide">
+                                                    <span class="feedback">The product is already in the wishlist!</span>
+                                                    <a rel="nofollow" href="#" class="add_to_wishlist" name="{{ p.id }},{{ request.user.id }}">Wishlist</a>
+                                                </div>
+                                                <div style="clear:both"></div>
+                                                <div class="yith-wcwl-wishlistaddresponse"></div>
+                                            </div>
+                                            <div class="clear"></div>
+                                            <a data-product_id="{{ p.id }}" class="add-to-compare-link" href="#">Compare</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+
+
+        </ul>
+    </div>
+    <div role="tabpanel" class="tab-pane" id="list-view-small" aria-expanded="true">
+
+        <ul class="products columns-3">
+            {% for p in products %}
+                <li class="product list-view list-view-small">
+                    <div class="media">
+                        <div class="media-left">
+                            <a href="{% url 'shop:product_detail' p.sub_menu.slug p.slug %}">
+                                {% thumbnail p.image '145x90' crop='center' as im %}
+                                    <img class="wp-post-image" data-echo="{{ im.url }}"
+                                         src="{{ im.url }}" alt="{{ p.title }}">
+                                {% endthumbnail %}
+                            </a>
+                        </div>
+                        <div class="media-body media-middle">
+                            <div class="row">
+                                <div class="col-xs-12">
+                                <span class="loop-product-categories">
+                                <a rel="tag" href="{% url 'shop:product_list' p.sub_menu.slug %}">{{ p.sub_menu.title }}</a></span>
+                                    <a href="{% url 'shop:product_list' p.sub_menu.slug %}"><h3>{{ p.title }}</h3>
+                                        <div class="product-short-description">
+                                            {{ p.info|safe|slice:"70" }}..
+                                        </div>
+                                        <div class="product-rating">
+                                            <div title="Rated 4 out of 5" class="star-rating">
+                                                <span style="width:80%"><strong class="rating">4</strong> out of 5</span></div>
+                                            (3)
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-xs-12">
+                                    <div class="price-add-to-cart">
+                                        <span class="price"><span class="electro-price"><span class="amount">&#8378; {{ p.price }}</span></span></span>
+                                        <a class="button add_to_cart_button" href="cart.html" rel="nofollow">Add
+                                            to cart</a>
+                                    </div><!-- /.price-add-to-cart -->
+
+                                    <div class="hover-area">
+                                        <div class="action-buttons">
+                                            <a href="#" rel="nofollow" class="add_to_wishlist" name="{{ p.id }},{{ request.user.id }}">Wishlist</a>
+                                            <a href="compare.html" class="add-to-compare-link">Compare</a>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+<aside class="widget woocommerce widget_product_categories electro_widget_product_categories">
+    <ul class="product-categories category-single">
+        <li class="product_cat">
+            <ul class="show-all-cat">
+                <li class="product_cat"><span class="show-all-cat-dropdown">Tüm Kategorileri Göster<span
+                        class="child-indicator"><i class="fa fa-angle-right"></i></span></span>
+                    <ul style="display: none;">
+                        {% for o in otherCat %}
+                            <li class="cat-item"><a href="{% url 'shop:product_list' o.slug %}"><span class="no-child"></span>{{ o.title }}</a></li>
+                        {% endfor %}
+
+
+                    </ul>
+                </li>
+            </ul>
+            <ul>
+                <li class="cat-item current-cat"><a href="#"><span
+                        class="child-indicator open"><i class="fa fa-angle-up"></i></span> {{ subMenus.0.parent.title }}</a>
+                    <ul class="children" style="display: block;">
+                        {% for c in subMenus %}
+                            <li class="cat-item"><a href="{% url 'shop:product_list' c.slug %}"><span class="no-child"></span>{{ c.title }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            </ul>
+        </li>
+    </ul>
+</aside>

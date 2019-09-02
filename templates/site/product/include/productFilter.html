@@ -1,0 +1,46 @@
+{% load proTags %}
+<aside class="widget widget_electro_products_filter" id="filter_by_attr">
+    <h3 class="widget-title">Filters</h3>
+    <aside class="widget woocommerce widget_layered_nav">
+        <h3 class="widget-title">Markalar</h3>
+        <ul>
+            {% for b in brands %}
+               <li class="checkbox"> <label><input type="checkbox" class="checkbox" id="brandF{{ b.id }}"  value="{{ b.id }}"> &nbsp;{{ b.title }} <span class="cr"><i class=""></i></span></label></li>
+            {% endfor %}
+        </ul>
+    </aside>
+    {% for a in attr %}
+        <aside class="widget woocommerce widget_layered_nav">
+            <h3 class="widget-title">{{ a.name }}</h3>
+            <ul id="attrFilterByID{{ a.id }}" name="{{ a.id }}">
+                {% for sub in subAttr|filterSubAttr:a.id %}
+                    <li class="checkbox">
+                        <label><input type="checkbox" class="checkbox" id="varyant{{ sub.id }}" name="{{ sub.id }}" value="{{ sub.id }}" data-model-name="{{ a.id }}"> &nbsp;{{ sub.title }}
+                            <span class="cr"><i class=""></i></span>
+                        </label>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+    {% endfor %}
+
+    <aside class="widget woocommerce widget_price_filter">
+        <h3 class="widget-title">Fiyat</h3>
+        <form action="#">
+            <div class="row">
+                <div class="col">
+                    <input type="text" name="minPrice" id="minPrice" class="form-control" placeholder="Min Price">
+                </div>
+                <div class="col">
+                    <input type="text" id="maxPrice" name="maxPrice" class="form-control" placeholder="Max Price">
+                </div>
+                <div class="col">
+                    <div class="price_slider_amount">
+                    <a href="#" class="button">Filter</a>
+                    <div class="clear"></div>
+                </div>
+                </div>
+            </div>
+        </form>
+    </aside>
+</aside>

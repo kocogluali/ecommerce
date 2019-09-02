@@ -1,0 +1,189 @@
+{% extends 'site/base/base.html' %}
+{% block body %}
+    <div class="container">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'homeView' %}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Ev</font></font></a><span class="delimiter"><i
+                class="fa fa-angle-right"></i></span><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Hesabım</font></font></nav>
+        <div class="site-content-inner">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+
+
+                    <article id="post-3854" class="post-3854 page type-page status-publish hentry">
+
+                        <div class="entry-content">
+                            <div class="woocommerce">
+
+                                <div class="customer-login-form">
+                                    <span class="or-text"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">veya</font></font></span>
+                                    {% include 'site/base/messages.html' %}
+                                    <div class="u-columns col2-set" id="customer_login">
+
+                                        <div class="u-column1 col-1">
+
+
+                                            <h2><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Oturum aç</font></font></h2>
+                                            {% if request.user.is_authenticated %}
+                                                <p>{{ request.user }} olarak oturum açtınız</p>
+                                                <a class="woocommerce-Button button" href="{% url 'accounts:logout' %}"> Çıkış Yap</a>
+                                                <h2>Sosyal Medya Oturumları</h2>
+
+                                                <h3>GitHub</h3>
+                                                {% if github_login %}
+                                                    <p> <a href="https://github.com/{{ github_login.extra_data.login }}/" target="_blank">{{ github_login.extra_data.login }}</a> hesabıyla giriş yaptınız</p>
+                                                    {% if can_disconnect %}
+                                                        <form method="post" action="{% url 'social:disconnect' 'github' %}">
+                                                            {% csrf_token %}
+                                                            <button type="submit">Github Oturumu Kapat</button>
+                                                        </form>
+                                                    {% else %}
+                                                        <button type="button" disabled>Github Oturumu Kapat</button>
+                                                        <p style="color: red">Github hesabından ayrılmadan önce bir <a href="{% url 'accounts:password' %}">parola</a> oluşturmalısın</p>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <a href="{% url 'social:begin' 'github' %}">Github ile giriş yap</a>
+                                                {% endif %}
+
+                                                <h3>Twitter</h3>
+                                                {% if twitter_login %}
+                                                    <p>Connected as <a href="https://twitter.com/{{ twitter_login.extra_data.access_token.screen_name }}/" target="_blank">@{{ twitter_login.extra_data.access_token.screen_name }}</a></p>
+                                                    {% if can_disconnect %}
+                                                        <form method="post" action="{% url 'social:disconnect' 'twitter' %}">
+                                                            {% csrf_token %}
+                                                            <button type="submit">Disconnect from Twitter</button>
+                                                        </form>
+                                                    {% else %}
+                                                        <button type="button" disabled>Disconnect from Twitter</button>
+                                                        <p style="color: red">You must <a href="{% url 'password' %}">define a password</a> for your account before disconnecting from Twitter.</p>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <a href="{% url 'social:begin' 'twitter' %}">Connect to Twitter</a>
+                                                {% endif %}
+
+                                                <h3>Facebook</h3>
+                                                {% if facebook_login %}
+                                                    <p>Connected as <a href="https://facebook.com/{{ facebook_login.extra_data.id }}/" target="_blank">{{ facebook_login.extra_data.id }}</a></p>
+                                                    {% if can_disconnect %}
+                                                        <form method="post" action="{% url 'social:disconnect' 'facebook' %}">
+                                                            {% csrf_token %}
+                                                            <button type="submit">Disconnect from Facebook</button>
+                                                        </form>
+                                                    {% else %}
+                                                        <button type="button" disabled>Disconnect from Facebook</button>
+                                                        <p style="color: red">You must <a href="{% url 'password' %}">define a password</a> for your account before disconnecting from Facebook.</p>
+                                                    {% endif %}
+                                                {% else %}
+                                                    <a href="{% url 'social:begin' 'facebook' %}">Connect to Facebook</a>
+                                                {% endif %}
+                                            {% else %}
+                                                <form class="woocommerce-form woocommerce-form-login login" method="post">
+                                                    {% csrf_token %}
+                                                    <p class="before-login-text"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                                        Tekrar hoşgeldiniz! </font><font style="vertical-align: inherit;">Hesabınıza giriş yapın. </font></font></p>
+                                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                        <label for="username"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Kullanıcı adı veya e-posta adresi&nbsp; </font></font><span class="required"><font
+                                                                style="vertical-align: inherit;"><font style="vertical-align: inherit;">*</font></font></span></label>
+                                                        <input type="text" class="woocommerce-Input woocommerce-Input--text input-text" name="username" id="username" placeholder="Kullanıcı Adı" required>
+                                                    </p>
+                                                    <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                        <label for="password"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Şifre&nbsp; </font></font><span class="required"><font style="vertical-align: inherit;"><font
+                                                                style="vertical-align: inherit;">*</font></font></span></label>
+                                                        <input class="woocommerce-Input woocommerce-Input--text input-text" type="password" name="password" id="password" required placeholder="Parola">
+                                                    </p>
+
+
+                                                    <p class="form-row">
+                                                        <input type="hidden" id="woocommerce-login-nonce" name="woocommerce-login-nonce" value="87c25a9384"><input type="hidden" name="_wp_http_referer" value="/electro/my-account/">
+                                                        <button type="submit" class="woocommerce-Button button" name="login" value="Log in"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Oturum aç</font></font></button>
+
+                                                    </p>
+                                                    <p class="form-row">
+                                                        <a href="{% url 'social:begin' 'github' %}"><i class="fa fa-github" style="font-size:40px"></i> </a> &nbsp;
+                                                        <a href="{% url 'social:begin' 'facebook' %}"><i class="fa fa-facebook" style="font-size:40px"></i> </a>
+                                                    </p>
+                                                    <p class="woocommerce-LostPassword lost_password">
+                                                        <a href="/password_reset"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Şifreni mi unuttun?</font></font></a>
+                                                    </p>
+
+
+                                                </form>
+                                            {% endif %}
+
+
+                                        </div>
+
+                                        <div class="u-column2 col-2">
+
+                                            <h2><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Kayıt olmak</font></font></h2>
+
+                                            <form method="post" class="woocommerce-form woocommerce-form-register register">
+                                                {% csrf_token %}
+                                                <p class="before-register-text"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">
+                                                    Kişiselleştirilmiş bir alışveriş deneyiminin avantajlarından yararlanmak için bugün yeni bir hesap oluşturun. </font></font></p>
+
+                                                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                    <label for="reg_email"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ registerForm.email.label }}&nbsp; </font></font><span class="required"><font
+                                                            style="vertical-align: inherit;"><font style="vertical-align: inherit;">*</font></font></span></label>
+                                                    {{ registerForm.email }}
+                                                    <span style="color: red">{{ registerForm.email.errors }}</span>
+                                                </p>
+
+                                                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                    <label for="{{ registerForm.username.id_for_label }}"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ registerForm.username.label }}&nbsp; </font></font><span
+                                                            class="required"><font
+                                                            style="vertical-align: inherit;"><font style="vertical-align: inherit;">*</font></font></span></label>
+                                                    {{ registerForm.username }}
+                                                    <span style="color: red">{{ registerForm.username.errors }}</span>
+                                                </p>
+                                                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                    <label for="reg_password"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ registerForm.password1.label }}&nbsp; </font></font><span class="required"><font
+                                                            style="vertical-align: inherit;"><font
+                                                            style="vertical-align: inherit;">*</font></font></span></label>
+                                                    {{ registerForm.password1 }}
+                                                    <span class="red">{{ registerForm.password1.errors }}</span>
+                                                </p>
+                                                <p class="woocommerce-form-row woocommerce-form-row--wide form-row form-row-wide">
+                                                    <label for="reg_password">
+                                                        <font style="vertical-align: inherit;"><font style="vertical-align: inherit;">{{ registerForm.password2.label }}&nbsp; </font></font>
+                                                        <span class="required"><font
+                                                                style="vertical-align: inherit;"><font
+                                                                style="vertical-align: inherit;">*</font></font></span>
+                                                    </label>
+
+                                                    {{ registerForm.password2 }}
+                                                    <span class="red">{{ registerForm.password2.errors }}</span>
+                                                </p>
+
+
+                                                <div class="woocommerce-privacy-policy-text"></div>
+                                                <p class="woocommerce-FormRow form-row">
+                                                    <input type="hidden" id="woocommerce-register-nonce" name="woocommerce-register-nonce" value="ad344a3a46"><input type="hidden" name="_wp_http_referer" value="/electro/my-account/">
+                                                    <button type="submit" class="woocommerce-Button button" name="register" value="Register"><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Kayıt olmak</font></font>
+                                                    </button>
+                                                </p>
+
+                                                <div class="register-benefits">
+                                                    <h3><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Bugün kaydolun ve aşağıdakileri yapabileceksiniz:</font></font></h3>
+                                                    <ul>
+                                                        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Çıkışta yolunuzu hızlandırın</font></font></li>
+                                                        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Siparişlerinizi kolayca takip edin</font></font></li>
+                                                        <li><font style="vertical-align: inherit;"><font style="vertical-align: inherit;">Tüm satın alımlarınızın kaydını tutun</font></font></li>
+                                                    </ul>
+                                                </div>
+                                            </form>
+
+                                        </div>
+
+                                    </div>
+
+                                </div><!-- /.customer-login-form -->
+                            </div>
+                        </div><!-- .entry-content -->
+
+                    </article><!-- #post-## -->
+
+                </main><!-- #main -->
+            </div><!-- #primary -->
+
+        </div>
+    </div>
+{% endblock %}

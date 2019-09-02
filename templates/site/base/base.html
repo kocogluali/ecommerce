@@ -1,0 +1,90 @@
+{% load static %}
+{% load hometags %}
+<!DOCTYPE html>
+<html lang="en-US" itemscope="itemscope" itemtype="http://schema.org/WebPage">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Electro &#8211; Electronics Ecommerce Theme</title>
+
+
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap.min.css' %}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-awesome.min.css' %}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/animate.min.css' %}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/font-electro.css' %}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/owl-carousel.css' %}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}" media="all"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'assets/css/colors/yellow.css' %}" media="all"/>
+
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,700italic,800,800italic,600italic,400italic,300italic' rel='stylesheet' type='text/css'>
+
+    <link rel="shortcut icon" href="{% static 'assets/images/fav-icon.png ' %}">
+    {% block meta %}
+
+    {% endblock %}
+
+</head>
+
+<body class="single-product full-width">
+<div id="page" class="hfeed site">
+    <a class="skip-link screen-reader-text" href="#site-navigation">Skip to navigation</a>
+    <a class="skip-link screen-reader-text" href="#content">Skip to content</a>
+
+    <div class="top-bar">
+        <div class="container">
+            <nav>
+                <ul id="menu-top-bar-left" class="nav nav-inline pull-left animate-dropdown flip">
+                    <li class="menu-item animate-dropdown"><a title="Welcome to Worldwide Electronics Store" href="#">Türkiyenin Online Marketi</a></li>
+                </ul>
+            </nav>
+
+            <nav>
+                <ul id="menu-top-bar-right" class="nav nav-inline pull-right animate-dropdown flip">
+                    <li class="menu-item animate-dropdown"><a title="Store Locator" href="#"><i class="ec ec-map-pointer"></i>Store Locator</a></li>
+                    <li class="menu-item animate-dropdown"><a title="Track Your Order" href="track-your-order.html"><i class="ec ec-transport"></i>Track Your Order</a></li>
+                    <li class="menu-item animate-dropdown"><a title="Shop" href="{% url 'homeView' %}"><i class="ec ec-shopping-bag"></i>Mağaza</a></li>
+                    <li class="menu-item animate-dropdown"><a title="Blog" href="{% url 'blog:blogListAll' %}"><i class="fa fa-newspaper-o"></i>Blog</a></li>
+                    <li class="menu-item animate-dropdown"><a title="Hesabım" href="{% url 'accounts:login' %}"><i class="ec ec-user"></i>Hesabım</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div><!-- /.top-bar -->
+    {% if request.get_full_path == "/" %}
+        {% showHeaderIndex request %}
+    {% else %}
+        {% showHeaderForAll request %}
+    {% endif %}
+
+
+
+
+    <div id="content" class="site-content" tabindex="-1">
+        {% block body %}
+
+        {% endblock %}
+    </div><!-- /.site-content -->
+
+
+    {% showFooter %}
+
+</div><!-- #page -->
+
+<script type="text/javascript" src="{% static 'assets/js/jquery.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/tether.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/bootstrap.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/bootstrap-hover-dropdown.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/owl.carousel.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/echo.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/wow.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/jquery.easing.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/jquery.waypoints.min.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/electro.js' %}"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script type="text/javascript" src="{% static 'site/myCommerce.js' %}"></script>
+{% block script %}
+
+{% endblock %}
+
+</body>
+</html>

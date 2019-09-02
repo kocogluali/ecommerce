@@ -1,0 +1,45 @@
+{% load proTags %}
+<aside class="widget widget_electro_products_filter" id="filter_by_attr">
+    <input type="hidden" id="hid_page" value="1">
+    <h3 class="widget-title">Filters</h3>
+    <aside class="widget woocommerce widget_layered_nav">
+        <h3 class="widget-title">Markalar</h3>
+        <ul>
+            {% for b in brands %}
+               <li> <label><input type="checkbox" id="brandS{{ b.id }}"  value="{{ b.id }}"> &nbsp;{{ b.title }}</label></li>
+            {% endfor %}
+        </ul>
+    </aside>
+    {% for a in attr %}
+        <aside class="widget woocommerce widget_layered_nav">
+            <h3 class="widget-title">{{ a.name }} || {{ a.id }}</h3>
+            <ul id="attrFilterByID{{ a.id }}" name="{{ a.id }}">
+                {% for sub in subAttr|filterSubAttr:a.id %}
+                    <li style="">
+                    <label><input type="checkbox" id="varyant{{ sub.id }}" name="{{ sub.id }}" value="{{ sub.id }}" data-model-name="{{ a.id }}"> &nbsp;{{ sub.title }} |{{ sub.id }}</label>
+                    </li>
+                {% endfor %}
+            </ul>
+        </aside>
+    {% endfor %}
+
+    <aside class="widget woocommerce widget_price_filter">
+        <h3 class="widget-title">Price</h3>
+        <form action="#">
+            <div class="row">
+                <div class="col">
+                    <input type="text" id="minPrice" class="form-control" placeholder="Min Price">
+                </div>
+                <div class="col">
+                    <input type="text" id="maxPrice" class="form-control" placeholder="Max Price">
+                </div>
+                <div class="col">
+                    <div class="price_slider_amount">
+                    <a href="javascript:void(0);" onclick="searchPageFilter();" class="button" id="btnSearchFilter">Filter</a>
+                    <div class="clear"></div>
+                </div>
+                </div>
+            </div>
+        </form>
+    </aside>
+</aside>

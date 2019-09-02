@@ -1,0 +1,480 @@
+{% extends 'site/base/base.html' %}
+{% load accoTags %}
+{% block meta %}
+    <link rel='stylesheet' id='contact-form-7-css' href='https://demo2.madrasthemes.com/electro/wp-content/plugins/contact-form-7/includes/css/styles.css?ver=5.0.4' type='text/css' media='all'/>
+    <link rel='stylesheet' id='rs-plugin-settings-css' href='https://demo2.madrasthemes.com/electro/wp-content/plugins/revslider/public/assets/css/settings.css?ver=5.4.8' type='text/css' media='all'/>
+    <style id='rs-plugin-settings-inline-css' type='text/css'>
+        #rs-demo-id {
+        }
+    </style>
+    <link rel='stylesheet' id='select2-css' href='https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce/assets/css/select2.css?ver=3.4.6' type='text/css' media='all'/>
+    <style id='woocommerce-inline-inline-css' type='text/css'>
+        .woocommerce form .form-row .required {
+            visibility: visible;
+        }
+    </style>
+    <link rel='stylesheet' id='electro-style-css' href='https://demo2.madrasthemes.com/electro/wp-content/themes/electro/style.min.css?ver=2.2.0' type='text/css' media='all'/>
+{#    <link rel='stylesheet' id='electro-style-v2-css' href='https://demo2.madrasthemes.com/electro/wp-content/themes/electro/assets/css/v2.min.css?ver=2.2.0' type='text/css' media='all'/>#} <!-- temayı bpzuyor ->
+{#    <link rel='stylesheet' id='electro-color-css' href='https://demo2.madrasthemes.com/electro/wp-content/themes/electro/assets/css/colors/yellow.min.css?ver=2.2.0' type='text/css' media='all'/>#}
+    <link rel='stylesheet' id='stripe_styles-css' href='https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce-gateway-stripe/assets/css/stripe-styles.css?ver=4.1.10' type='text/css' media='all'/> <!-- for credit cart symbol >
+{% endblock %}
+{% block body %}
+    <div class="container"
+         data-inline-type="page-template-default page page-id-3135 woocommerce-checkout woocommerce-page woocommerce-js electro-compact wpb-js-composer js-comp-ver-5.5.5 vc_responsive  pace-done">
+        <nav class="woocommerce-breadcrumb"><a href="https://demo2.madrasthemes.com/electro">Home</a><span class="delimiter"><i class="fa fa-angle-right"></i></span>Checkout</nav>
+        <div class="site-content-inner">
+            <div id="primary" class="content-area">
+                <main id="main" class="site-main">
+                    <article id="post-3135" class="post-3135 page type-page status-publish hentry">
+                        <header class="entry-header">
+                            <h1 class="entry-title">Ödeme</h1>
+                        </header><!-- .entry-header -->
+                        <div class="entry-content">
+                            <div class="woocommerce">
+                                {% if form.errors %}
+                                    <div class="alert alert-danger" role="alert">
+                                        {{ form.errors }}
+                                    </div>
+                                {% endif %}
+                                {% if not request.user.is_authenticated %}
+                                    <div class="woocommerce-form-login-toggle">
+                                        <div class="woocommerce-info">Hesabınız Varmı ? <a href="{% url 'accounts:login' %}" class="showlogin">Giriş Yapın</a></div>
+                                    </div>
+                                {% endif %}
+                                <!-- coupon code -->
+                                {% if sepetim %}
+                                    <div class="woocommerce-form-coupon-toggle">
+
+                                        <div class="woocommerce-info">Kuponun mu var? <a href="javascript:void(0);" onclick='document.getElementById("formCoupon").style.display = "block"' class="showcoupon">Buraya tıklayarak kuponu girebilirsin</a>
+                                        </div>
+                                    </div>
+
+                                    <form class="checkout_coupon woocommerce-form-coupon" method="post" style="display:none" id="formCoupon">
+
+                                        <p>Kupon kodunuz varsa, lütfen aşağıya yazınız</p>
+
+                                        <p class="form-row form-row-first">
+                                            <input type="text" placeholder="Kupon Kodu" value="" id="coupon_code" class="input-text" name="coupon_code">
+                                        </p>
+
+                                        <p class="form-row form-row-last">
+                                            <input type="button" value="Kuponu Uygula" name="apply_coupon" class="button" data-model-name="{{ sepetim.0.parent_sepet.id }}"/>
+                                        </p>
+
+                                        <div class="clear"></div>
+                                    </form>
+                                {% endif %}
+                                <!-- ./coupon code -->
+                                {% if request.user %}
+                                    <div class="container">
+                                        <div class="row">
+                                            {% for a in adresler %}
+                                                {% if forloop.first %}
+                                                    <h4>Adreslerim :</h4>
+                                                {% endif %}
+                                                <div class="col-md-2"><label for="oldAdres{{ a.id }}"><input type="radio" value="{{ a.id }}" id="oldAdres{{ a.id }}" name="oldAdres" {% if forloop.first %}checked {% endif %}> {{ a.adres_name }}</label>
+                                                </div>
+                                            {% endfor %}
+                                            {% if request.user.is_authenticated %}
+                                                <div class="col-2"><label for="newAdres"><input type="radio" value="0" name="oldAdres" id="newAdres"> Yeni Adres Ekle</label></div>
+                                            {% endif %}
+
+                                        </div>
+                                    </div>
+
+                                {% endif %}
+                                <!-- new checkout and payment -->
+
+                                {% if sepetim %}
+                                    <form name="checkout" id="newCheckout" method="POST" class="checkout woocommerce-checkout" enctype="multipart/form-data" novalidate>
+                                        {% csrf_token %}
+                                        <input type="hidden" name="selected_adres" id="selected_adres" value="{% if adresler %} {{ adresler.0.id }} {% else %}0{% endif %}">
+                                        <input type="hidden" id="taksit_sayisi" name="taksit_sayisi" value="1">
+                                        <div class="col2-set">
+                                            <div id="customer_details" style="display: {% if  request.user.is_authenticated %}none{% endif %}">
+                                                <div class="col-1">
+                                                    <div class="woocommerce-billing-fields">
+                                                        <h3>Ödeme Detayları</h3>
+                                                        <div class="woocommerce-billing-fields__field-wrapper">
+                                                            <p class="form-row form-row-first validate-required" id="billing_first_name_field" data-priority="10">
+                                                                <label for="id_name" class="">Adınız&nbsp;<abbr class="required" title="Gerekli">*</abbr>
+                                                                </label><span class="woocommerce-input-wrapper">
+                                                        <input type="text" class="input-text " name="name" id="id_name" placeholder="Adınız" required>
+                                                    </span>
+                                                            </p>
+                                                            <p class="form-row form-row-last validate-required" id="billing_last_name_field" data-priority="20">
+                                                                <label for="billing_last_name" class="">Soyadınız&nbsp;<abbr class="required" title="Gerekli">*</abbr></label>
+                                                                <span class="woocommerce-input-wrapper">
+                                                            <input type="text" class="input-text" name="last_name" id="id_last_name" placeholder="Soyadınız" required>
+                                                        </span>
+                                                            </p>
+
+                                                            <p class="form-row form-row-wide" id="billing_company_field" data-priority="30"><label for="billing_company" class="">Ülke&nbsp;</label>
+                                                                <span class="woocommerce-input-wrapper">
+                                                        <span> Türkiye</span>
+                                                        </span>
+                                                            </p>
+                                                            <p class="form-row form-row-wide address-field validate-required" id="billing_address_1_field">
+                                                                <label for="id_adres" class="">Adres&nbsp;<abbr class="required" title="required">*</abbr></label>
+                                                                <span class="woocommerce-input-wrapper">
+                                                                <textarea class="input-text" name="adres" id="id_adres"
+                                                                          placeholder="Mahalle,Cadde,Sokak,Bina,Daire" maxlength="255" required>
+                                                                </textarea>
+                                                        </span>
+                                                            </p>
+                                                            <p class="form-row form-row-first validate-required" data-priority="10">
+                                                                <label for="id_postcode" class="">Posta Kodu&nbsp;<abbr class="required" title="Gerekli">*</abbr>
+                                                                </label><span class="woocommerce-input-wrapper">
+                                                        {{ form.postcode }}
+                                                    </span>
+                                                            </p>
+                                                            <p class="form-row form-row-last validate-required" data-priority="20">
+                                                                <label for="id_adres_name" class="">Adres Adı&nbsp;<abbr class="required" title="Gerekli">*</abbr></label>
+                                                                <span class="woocommerce-input-wrapper">
+                                                            <input type="text" class="input-text" name="adres_name" id="id_adres_name" placeholder="Örn : Evim" required>
+                                                        </span>
+                                                            </p>
+                                                            <p class="form-row form-row-wide address-field validate-required" id="billing_city_field" data-priority="70"
+                                                               data-o_class="form-row form-row-wide address-field validate-required"><label for="id_city" class="">Şehir&nbsp;<abbr
+                                                                    class="required" title="required">*</abbr></label><span class="woocommerce-input-wrapper">
+                                                        {{ form.city }}</span>
+                                                            </p>
+                                                            <p class="form-row form-row-wide address-field validate-required validate-state woocommerce-invalid woocommerce-invalid-required-field"
+                                                               id="billing_state_field" data-priority="80"
+                                                               data-o_class="form-row form-row-wide address-field validate-required validate-state woocommerce-invalid woocommerce-invalid-required-field">
+                                                                <label for="id_province" class="">İlçe&nbsp;<abbr class="required" title="required">*</abbr></label><span
+                                                                    class="woocommerce-input-wrapper">{{ form.province }}</span>
+                                                            </p>
+                                                            <p class="form-row form-row-wide validate-required validate-phone" id="id_phone" data-priority="100"><label
+                                                                    for="id_phone" class="">Telefon&nbsp;<abbr class="required" title="required">*</abbr></label><span
+                                                                    class="woocommerce-input-wrapper">
+                                                        <input type="tel" class="input-text " name="phone_number" id="id_phone_number" required></span></p>
+                                                            <p class="form-row form-row-wide validate-required validate-email" id="billing_email_field" data-priority="110">
+                                                                <label for="id_mail" class="">Email address&nbsp;<abbr class="required" title="required">*</abbr></label>
+                                                                <span class="woocommerce-input-wrapper">
+                                                            <input type="email" class="input-text " name="mail" id="id_mail" placeholder="mail@example.com" required>
+                                                        </span>
+                                                            </p>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Create New Account -->
+                                                    {% if not request.user.is_authenticated %}
+                                                        <div class="woocommerce-account-fields">
+                                                            <p class="form-row form-row-wide create-account woocommerce-validated">
+                                                                <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
+                                                                    <input class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" id="createaccount" type="checkbox"
+                                                                           name="createaccount" value="1"> <span>Hesap Oluşturulsun mu ?</span>
+                                                                </label>
+                                                            </p>
+                                                            <div class="create-account" style="display: none;">
+                                                                <p class="form-row validate-required" id="account_password_field" data-priority=""><label for="account_password" class="">Hesap Parolası&nbsp;<abbr class="required"
+                                                                                                                                                                                                                    title="required">*</abbr></label>
+                                                                    <span class="woocommerce-input-wrapper">
+                                                            <input type="password" class="input-text " name="account_password" id="account_password" placeholder="Password" value=""></span></p>
+                                                                <div class="clear"></div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                    <!-- ./Create New Account -->
+                                                </div>
+                                                <input type="submit" class="btn btn-primary" name="adresFormButton" value="Adres Bilgilerini Kaydet">
+                                            </div>
+                                        </div>
+                                        <!-- ./new checkout !-->
+                                        <!-- ORDER AND CART -->
+                                        <div class="order-review-wrapper">
+                                            <h3 id="order_review_heading_v2">Siparişleriniz</h3>
+                                            <div id="order_review" class="woocommerce-checkout-review-order">
+                                                <table class="shop_table woocommerce-checkout-review-order-table">
+                                                    <thead>
+                                                    <tr>
+                                                        <th class="product-name">Ürün</th>
+                                                        <th class="product-total">Toplam</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                    {% for s in sepetim %}
+                                                        <tr class="cart_item">
+                                                            <td class="product-name">
+                                                                {{ s.parent_product.title }}&nbsp; <strong class="product-quantity">× {{ s.qty }}</strong></td>
+                                                            <td class="product-total">
+                                                                <span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&#8378; </span>{{ s.totalPrice }}</span></td>
+                                                        </tr>
+                                                    {% endfor %}
+                                                    </tbody>
+                                                    <tfoot>
+
+                                                    <tr class="cart-subtotal">
+                                                        <th>Ara Toplam</th>
+                                                        <td><span class="woocommerce-Price-amount amount"><span class="woocommerce-Price-currencySymbol">&#8378;</span>{{ sepetim.0.parent_sepet.sepet_tutar }}</span></td>
+                                                    </tr>
+
+
+                                                    <tr class="shipping">
+                                                        <th>Kargo</th>
+                                                        <td data-title="Shipping">
+                                                            <p>{{ sepetim.0.parent_sepet.cargo }} | &#8378; {{ sepetim.0.parent_sepet.cargo.price }} </p>
+
+
+                                                        </td>
+                                                    </tr>
+                                                    {% if sepetim.0.parent_sepet.coupon %}
+                                                        <tr class="tax-total">
+                                                            <th>Kupon</th>
+                                                            <td><span class="woocommerce-Price-amount amount"><span
+                                                                    class="woocommerce-Price-currencySymbol">{{ sepetim.0.parent_sepet.coupon }} &nbsp; &nbsp; <i class="fa fa-minus"></i>&nbsp; &#8378; </span> <span
+                                                                    class="text-success ">{{ sepetim.0.parent_sepet.coupon.disc_price }}</span></span>
+                                                            </td>
+                                                        </tr>
+                                                    {% endif %}
+
+                                                    <tr class="order-total">
+                                                        <th>Toplam</th>
+                                                        <td>
+                                                            <strong><span class="woocommerce-Price-amount amount">
+                                                            <span class="woocommerce-Price-currencySymbol">&#8378; </span>
+                                                                {% with sepetim.0.parent_sepet.coupon as KuponPrice %}
+                                                                    {% if KuponPrice %}
+                                                                        <span id="cartTotal">{{ sepetim.0.parent_sepet.sepet_tutar|addDecimalPrice:sepetim.0.parent_sepet.cargo.price|cikarDecimalPrice:KuponPrice.disc_price }}</span>
+                                                                    {% else %}
+                                                                        <span id="cartTotal">{{ sepetim.0.parent_sepet.sepet_tutar|addDecimalPrice:sepetim.0.parent_sepet.cargo.price }}</span>
+                                                                    {% endif %}
+                                                                {% endwith %}
+                                                            </span>
+                                                            </strong>
+                                                        </td>
+                                                    </tr>
+                                                    </tfoot>
+                                                </table>
+
+
+                                                <div id="payment" class="woocommerce-checkout-payment">
+                                                    <h1>adres id = {{ request.session.adresID }}</h1>
+                                                    {% if request.session.adresID or adresler %}
+
+                                                        <ul class="wc_payment_methods payment_methods methods">
+                                                            <li class="wc_payment_method payment_method_cod">
+                                                                <input id="payment_method_cod" type="radio" class="input-radio" name="payment_method" value="cod" checked="checked"
+                                                                       data-order_button_text="">
+
+                                                                <label for="payment_method_cod">
+                                                                    Cash on delivery </label>
+                                                                <div class="payment_box payment_method_cod" style="display: none;">
+                                                                    <p>Pay with cash upon delivery.</p>
+                                                                </div>
+                                                            </li>
+                                                            <li class="wc_payment_method payment_method_stripe">
+                                                                <input id="payment_method_stripe" type="radio" class="input-radio" name="payment_method" value="stripe" data-order_button_text="">
+
+                                                                <label for="payment_method_stripe">
+                                                                    Credit Card (Stripe)
+                                                                    <img src="https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce-gateway-stripe/assets/images/visa.svg"
+                                                                         class="stripe-visa-icon stripe-icon" alt="Visa">
+                                                                    <img src="https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce-gateway-stripe/assets/images/amex.svg"
+                                                                         class="stripe-amex-icon stripe-icon" alt="American Express">
+                                                                    <img src="https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce-gateway-stripe/assets/images/mastercard.svg"
+                                                                         class="stripe-mastercard-icon stripe-icon" alt="Mastercard">
+                                                                    <img src="https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce-gateway-stripe/assets/images/discover.svg"
+                                                                         class="stripe-discover-icon stripe-icon" alt="Discover">
+                                                                    <img src="https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce-gateway-stripe/assets/images/jcb.svg"
+                                                                         class="stripe-jcb-icon stripe-icon" alt="JCB">
+                                                                    <img src="https://demo2.madrasthemes.com/electro/wp-content/plugins/woocommerce-gateway-stripe/assets/images/diners.svg" sclass="stripe-diners-icon stripe-icon" alt="Diners">
+                                                                </label>
+                                                                <div class="payment_box payment_method_stripe" style="display: block;">
+                                                                    <div id="stripe-payment-data">
+                                                                        <fieldset id="wc-stripe-cc-form" class="wc-credit-card-form wc-payment-form" style="background:transparent;">
+
+                                                                            <div class="form-row form-row-wide">
+                                                                                <label for="stripe-card-element">Card Number <span class="required">*</span></label>
+                                                                                <div class="stripe-card-group">
+                                                                                    <div id="stripe-card-element" class="wc-stripe-elements-field StripeElement empty">
+                                                                                        <input type="tel" class="form-control" id="cardNumberCre" name="cardNumberCre" placeholder="Kart Numarası" value="5400360000000003">
+                                                                                    </div>
+
+                                                                                    <i class="stripe-credit-card-brand stripe-card-brand" alt="Credit Card"></i>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <label for="stripe-exp-element">Kart Üzerindeki İsim<span class="required">*</span></label>
+                                                                                <div id="stripe-exp-element" class="wc-stripe-elements-field StripeElement empty">
+                                                                                    <div class="__PrivateStripeElement"
+                                                                                         style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;">
+                                                                                        <input type="text" class="form-control text-uppercase" name="cardHolderName" placeholder="Kart üzerindeki tam isim" min="5" max="50" id="cardHolderName">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row form-row-first">
+                                                                                <label for="stripe-exp-element">Expiry Ay <span class="required">*</span></label>
+
+                                                                                <div id="stripe-exp-element" class="wc-stripe-elements-field StripeElement empty">
+                                                                                    <div class="__PrivateStripeElement"
+                                                                                         style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;">
+                                                                                        <input type="number" class="form-control" name="cardMonth" placeholder="AA" min="0" max="12" id="cardMonth">
+
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="form-row form-row-last">
+                                                                                <label for="stripe-exp-element">Expiry Year <span class="required">*</span></label>
+
+                                                                                <div id="stripe-exp-element" class="wc-stripe-elements-field StripeElement empty">
+                                                                                    <div class="__PrivateStripeElement"
+                                                                                         style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;">
+                                                                                        <input type="number" class="form-control" name="cardYear" placeholder="YY" min="2000" id="cardYear">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="form-row">
+                                                                                <label for="stripe-cvc-element">Card Code (CVC) <span class="required">*</span></label>
+                                                                                <div id="stripe-cvc-element" class="wc-stripe-elements-field StripeElement empty">
+                                                                                    <div class="__PrivateStripeElement"
+                                                                                         style="margin: 0px !important; padding: 0px !important; border: none !important; display: block !important; background: transparent !important; position: relative !important; opacity: 1 !important;">
+                                                                                        <input type="number" class="form-control" name="cvc" placeholder="CVC" min="0" maxlength="3" id="cardCVC">
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+
+                                                                            <div class="clear"></div>
+
+                                                                            <!-- Used to display form errors -->
+                                                                            <div class="stripe-source-errors" role="alert"></div>
+                                                                            <br>
+                                                                            <div class="clear"></div>
+                                                                        </fieldset>
+                                                                    </div>
+                                                                </div>
+
+                                                            </li>
+                                                        </ul>
+
+
+                                                        <div class="row">
+                                                            <div class="container table-responsive">
+                                                                <table class="table" id="iyzico_installment">
+                                                                    <thead>
+                                                                    <tr>
+                                                                        <td class="text-center"><span class="title" id="payment_banka_resim"></span></td>
+                                                                    </tr>
+                                                                    <tr>
+                                                                        <th scope="col">#</th>
+                                                                        <th scope="col">Taksit Tutarı</th>
+                                                                        <th scope="col">Taksit Sayısı</th>
+                                                                        <th scope="col">Toplam</th>
+                                                                    </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">1</th>
+                                                                        <td>Mark</td>
+                                                                        <td>Otto</td>
+                                                                        <td>@mdo</td>
+                                                                    </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-row place-order">
+                                                            <noscript>
+                                                                Since your browser does not support JavaScript, or it is disabled, please ensure you click the &lt;em&gt;Update Totals&lt;/em&gt;
+                                                                button before placing your order. You may be charged more than the amount stated above if you fail to do so. <br/>
+                                                                <button type="submit" class="button alt" name="woocommerce_checkout_update_totals" value="Update totals">Update totals</button>
+                                                            </noscript>
+                                                            <!-- Sözleşme -->
+                                                            <div class="woocommerce-terms-and-conditions-wrapper">
+                                                                <div class="woocommerce-privacy-policy-text"></div>
+                                                                <div id="sozlesme" style="display: none;">
+                                                                    <div class="woocommerce-terms-and-conditions" style=" max-height: 200px; overflow: auto;">
+                                                                        <section class="section inner-bottom-xs">
+                                                                            <h2>Intellectual Propertly</h2>
+                                                                            <ol>
+                                                                                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis diam erat. Duis velit lectus, posuere a
+                                                                                    blandit sit amet, tempor at lorem. Donec ultricies, lorem sed ultrices interdum.
+                                                                                </li>
+                                                                                <li>Leo metus luctus sem, vel vulputate diam ipsum sed lorem. Donec tempor arcu nisl, et molestie massa scelerisque
+                                                                                    ut. Nunc at rutrum leo. Mauris metus mauris, tristique quis sapien eu, rutrum vulputate enim.
+                                                                                </li>
+                                                                                <li>Mauris tempus erat laoreet turpis lobortis, eu tincidunt erat fermentum.</li>
+                                                                                <li>Aliquam non tincidunt urna. Integer tincidunt nec nisl vitae ullamcorper. Proin sed ultrices erat. Praesent varius
+                                                                                    ultrices massa at faucibus.
+                                                                                </li>
+                                                                                <li>Aenean dignissim, orci sed faucibus pharetra, dui mi dignissim tortor, sit amet condimentum mi ligula sit amet
+                                                                                    augue.
+                                                                                </li>
+                                                                                <li>Pellentesque vitae eros eget enim mollis placerat.</li>
+                                                                            </ol>
+                                                                        </section>
+                                                                        <section class="section inner-bottom-xs">
+                                                                            <h2>Termination</h2>
+                                                                            <ol>
+                                                                                <li>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam quis diam erat. Duis velit lectus, posuere a
+                                                                                    blandit sit amet, tempor at lorem. Donec ultricies, lorem sed ultrices interdum.
+                                                                                </li>
+                                                                                <li>Leo metus luctus sem, vel vulputate diam ipsum sed lorem. Donec tempor arcu nisl, et molestie massa scelerisque
+                                                                                    ut. Nunc at rutrum leo. Mauris metus mauris, tristique quis sapien eu, rutrum vulputate enim.
+                                                                                </li>
+                                                                                <li>Mauris tempus erat laoreet turpis lobortis, eu tincidunt erat fermentum.</li>
+                                                                                <li>Aliquam non tincidunt urna. Integer tincidunt nec nisl vitae ullamcorper. Proin sed ultrices erat. Praesent varius
+                                                                                    ultrices massa at faucibus.
+                                                                                </li>
+                                                                                <li>Aenean dignissim, orci sed faucibus pharetra, dui mi dignissim tortor, sit amet condimentum mi ligula sit amet
+                                                                                    augue.
+                                                                                </li>
+                                                                                <li>Pellentesque vitae eros eget enim mollis placerat.</li>
+                                                                            </ol>
+                                                                        </section>
+                                                                        <section class="section inner-bottom-xs">
+                                                                            <h2>Changes To This Agreement</h2>
+                                                                            <p>We reserve the right, at our sole discretion, to modify or replace these Terms and Conditions by posting the updated
+                                                                                terms on the Site. Your continued use of the Site after any such changes constitutes your acceptance of the new Terms
+                                                                                and Conditions.</p>
+                                                                        </section>
+                                                                        <section class="section intellectual-property">
+                                                                            <h2>Contact Us</h2>
+                                                                            <p>If you have any questions about this Agreement, please contact us filling this <a
+                                                                                    href="https://demo2.madrasthemes.com/electro/shop/"><strong>contact form</strong></a></p>
+                                                                        </section>
+                                                                    </div>
+                                                                </div>
+                                                                <p class="form-row validate-required woocommerce-validated">
+                                                                    <label class="woocommerce-form__label woocommerce-form__label-for-checkbox checkbox">
+                                                                        <input type="checkbox" class="woocommerce-form__input woocommerce-form__input-checkbox input-checkbox" name="terms"
+                                                                               id="terms">
+                                                                        <span class="woocommerce-terms-and-conditions-checkbox-text">I have read and agree to the website <a
+                                                                                href="javascript:void(0);" onclick="openSozTab();" class="woocommerce-terms-and-conditions-link">terms and conditions</a></span>&nbsp;<span class="required">*</span>
+                                                                    </label>
+                                                                    <input type="hidden" name="terms-field" value="1">
+                                                                </p>
+                                                            </div>
+                                                            <!--Sözleşme -->
+                                                            <input type="submit" value="Ödemeyi Yap" name="paymentForm" onclick="return(checkPaymentInputs());"/>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            </div><!-- /.order-review-wrapper -->
+                                            <!-- ./ORDER AND CART -->
+
+                                    </form>
+                                {% else %}
+                                    <div class="woocommerce">
+                                        <p class="cart-empty">Sepetin boş görünüyor.</p>
+                                        <p class="return-to-shop">
+                                            <a href="/" class="button"> Alışverişe Devam Et</a>
+                                        </p>
+                                    </div>
+                                {% endif %}
+
+                            </div>
+                        </div><!-- .entry-content -->
+
+                    </article><!-- #post-## -->
+
+                </main><!-- #main -->
+            </div><!-- #primary -->
+
+        </div>
+    </div><!-- .col-full -->
+{% endblock %}
+{% block script %}
+
+{% endblock %}

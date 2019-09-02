@@ -1,0 +1,342 @@
+{% extends 'site/base/base.html' %}
+{% load thumbnail %}
+{% load proTags %}
+{% block body %}
+    <div class="container" data-inline-type="left-sidebar">
+        <nav class="woocommerce-breadcrumb"><a href="{% url 'homeView' %}">Anasayfa</a><span class="delimiter"><i
+                class="fa fa-angle-right"></i></span>{{ subMenus.0.parent.title }}
+        </nav>
+        <div id="primary" class="content-area">
+            <main id="main" class="site-main">
+                <section>
+                    <header>
+                        <h2 class="h1">{{ subMenus.0.parent.title }}</h2>
+                    </header>
+                    <div class="woocommerce columns-4">
+                        <ul class="product-loop-categories">
+                            {% for c in subMenus %}
+                                <li class="product-category product first">
+                                    <a href="{% url 'shop:product_list' c.slug %}">
+                                        {% thumbnail c.banner "250x232" crop="center" as im %}
+                                            <img src="{{ im.url }}" alt="{{ n.title }}" width="250"
+                                                 height="232">
+                                        {% endthumbnail %}
+                                        <h3>{{ c.title }}
+                                            <mark class="count">(2)</mark>
+                                        </h3>
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </section>
+
+                <section class="section-product-cards-carousel">
+                    <header><h2 class="h1">Best Sellers</h2></header>
+                    <div id="home-v-product-cards-careousel">
+                        <div class="woocommerce columns-2 home-v1-product-cards-carousel product-cards-carousel owl-carousel owl-loaded owl-drag">
+                            <div class="owl-stage-outer">
+                                <div class="owl-stage"
+                                     style="transform: translate3d(0px, 0px, 0px); transition: all 0s ease 0s; width: 1726px;">
+                                    <div class="owl-item active" style="width: 863px;">
+                                        <ul class="products columns-2">
+                                            <li class="product product-card first">
+
+                                                <div class="product-outer" style="height: 216px;">
+                                                    <div class="media product-inner">
+
+                                                        <a class="media-left" href="single-product.html"
+                                                           title="Pendrive USB 3.0 Flash 64 GB">
+                                                            <img class="media-object wp-post-image img-responsive"
+                                                                 src="assets/images/product-cards/4.jpg" alt="">
+                                                        </a>
+                                                        <div class="media-body">
+                                                        <span class="loop-product-categories">
+                                                            <a href="product-category.html" rel="tag">TVs</a>
+                                                        </span>
+                                                            <a href="single-product.html">
+                                                                <h3>Widescreen 4K SUHD TV</h3>
+                                                            </a>
+
+                                                            <div class="price-add-to-cart">
+                                                                <span class="price">
+                                                                    <span class="electro-price">
+                                                                        <ins><span class="amount"> </span></ins>
+                                                                                                    <span class="amount"> $800</span>
+                                                                    </span>
+                                                                </span>
+
+                                                                <a href="cart.html" class="button add_to_cart_button">Add
+                                                                    to cart</a>
+                                                            </div><!-- /.price-add-to-cart -->
+
+                                                            <div class="hover-area">
+                                                                <div class="action-buttons">
+
+                                                                    <a href="#" class="add_to_wishlist">
+                                                                        Wishlist</a>
+
+                                                                    <a href="#" class="add-to-compare-link">Compare</a>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div><!-- /.product-inner -->
+                                                </div><!-- /.product-outer -->
+
+                                            </li><!-- /.products -->
+                                            <li class="product product-card last">
+
+                                                <div class="product-outer" style="height: 216px;">
+                                                    <div class="media product-inner">
+
+                                                        <a class="media-left" href="single-product.html"
+                                                           title="Pendrive USB 3.0 Flash 64 GB">
+                                                            <img class="media-object wp-post-image img-responsive"
+                                                                 src="assets/images/product-cards/5.jpg" alt="">
+
+                                                        </a>
+
+                                                        <div class="media-body">
+				<span class="loop-product-categories">
+					<a href="product-category.html" rel="tag">Printers</a>
+				</span>
+
+                                                            <a href="single-product.html">
+                                                                <h3>Full Color LaserJet Pro M452dn</h3>
+                                                            </a>
+
+                                                            <div class="price-add-to-cart">
+					<span class="price">
+	                    <span class="electro-price">
+	                        <ins><span class="amount"> $3,788.00</span></ins>
+	                        	                            <del><span class="amount">$4,780.00</span></del>
+	                                                    <span class="amount"> </span>
+	                    </span>
+	                </span>
+
+                                                                <a href="cart.html" class="button add_to_cart_button">Add
+                                                                    to cart</a>
+                                                            </div><!-- /.price-add-to-cart -->
+
+                                                            <div class="hover-area">
+                                                                <div class="action-buttons">
+
+                                                                    <a href="#" class="add_to_wishlist">
+                                                                        Wishlist</a>
+
+                                                                    <a href="#" class="add-to-compare-link">Compare</a>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div><!-- /.product-inner -->
+                                                </div><!-- /.product-outer -->
+
+                                            </li><!-- /.products -->
+                                        </ul>
+                                    </div>
+                                    <div class="owl-item" style="width: 863px;">
+                                        <ul class="products columns-2">
+                                            <li class="product product-card first">
+
+                                                <div class="product-outer" style="height: 216px;">
+                                                    <div class="media product-inner">
+
+                                                        <a class="media-left" href="single-product.html"
+                                                           title="Pendrive USB 3.0 Flash 64 GB">
+                                                            <img class="media-object wp-post-image img-responsive"
+                                                                 src="assets/images/product-cards/2.jpg" alt="">
+
+                                                        </a>
+
+                                                        <div class="media-body">
+				<span class="loop-product-categories">
+					<a href="product-category.html" rel="tag">Headphone Cases</a>
+				</span>
+
+                                                            <a href="single-product.html">
+                                                                <h3>Universal Headphones Case in Black</h3>
+                                                            </a>
+
+                                                            <div class="price-add-to-cart">
+					<span class="price">
+	                    <span class="electro-price">
+	                        <ins><span class="amount"> </span></ins>
+	                                                    <span class="amount"> $1500</span>
+	                    </span>
+	                </span>
+
+                                                                <a href="cart.html" class="button add_to_cart_button">Add
+                                                                    to cart</a>
+                                                            </div><!-- /.price-add-to-cart -->
+
+                                                            <div class="hover-area">
+                                                                <div class="action-buttons">
+
+                                                                    <a href="#" class="add_to_wishlist">
+                                                                        Wishlist</a>
+
+                                                                    <a href="#" class="add-to-compare-link">Compare</a>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div><!-- /.product-inner -->
+                                                </div><!-- /.product-outer -->
+
+                                            </li><!-- /.products -->
+                                            <li class="product product-card last">
+
+                                                <div class="product-outer" style="height: 216px;">
+                                                    <div class="media product-inner">
+
+                                                        <a class="media-left" href="single-product.html"
+                                                           title="Pendrive USB 3.0 Flash 64 GB">
+                                                            <img class="media-object wp-post-image img-responsive"
+                                                                 src="assets/images/product-cards/1.jpg" alt="">
+
+                                                        </a>
+
+                                                        <div class="media-body">
+				<span class="loop-product-categories">
+					<a href="product-category.html" rel="tag">Smartphones</a>
+				</span>
+
+                                                            <a href="single-product.html">
+                                                                <h3>Tablet Thin EliteBook Revolve 810 G6</h3>
+                                                            </a>
+
+                                                            <div class="price-add-to-cart">
+					<span class="price">
+	                    <span class="electro-price">
+	                        <ins><span class="amount"> $3,788.00</span></ins>
+	                        	                            <del><span class="amount">$4,780.00</span></del>
+	                                                    <span class="amount"> </span>
+	                    </span>
+	                </span>
+
+                                                                <a href="cart.html" class="button add_to_cart_button">Add
+                                                                    to cart</a>
+                                                            </div><!-- /.price-add-to-cart -->
+
+                                                            <div class="hover-area">
+                                                                <div class="action-buttons">
+
+                                                                    <a href="#" class="add_to_wishlist">
+                                                                        Wishlist</a>
+
+                                                                    <a href="#" class="add-to-compare-link">Compare</a>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div><!-- /.product-inner -->
+                                                </div><!-- /.product-outer -->
+
+                                            </li><!-- /.products -->
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="owl-nav disabled">
+                                <div class="owl-prev"></div>
+                                <div class="owl-next"></div>
+                            </div>
+                            <div class="owl-dots">
+                                <div class="owl-dot active"><span></span></div>
+                                <div class="owl-dot"><span></span></div>
+                            </div>
+                        </div>
+                    </div><!-- #home-v1-product-cards-careousel -->
+                </section>
+
+                <section class="section-product-cards-carousel">
+                    <header>
+                        <h2 class="h1">Bu Kategoride En Çok Oy Alanlar</h2>
+                        <div class="owl-nav">
+                            <a href="#products-carousel-prev" data-target="#recommended-product" class="slider-prev"><i
+                                    class="fa fa-angle-left"></i></a>
+                            <a href="#products-carousel-next" data-target="#recommended-product" class="slider-next"><i
+                                    class="fa fa-angle-right"></i></a>
+                        </div>
+                    </header>
+                    <div id="recommended-product">
+                        <div class="woocommerce columns-4">
+                            <div class="products owl-carousel products-carousel columns-4 owl-loaded owl-drag">
+                                {% for p in mostVoted %}
+                                    <div class="product">
+                                        <div class="product-outer">
+                                            <div class="product-inner">
+                                                <span class="loop-product-categories"><a href="" rel="tag">{{ p.main_menu__title }}</a></span>
+                                                <a href="{% url 'shop:product_detail' p.main_menu__slug p.slug %}">
+                                                    <h3>{{ p.title }}</h3>
+                                                    <div class="product-thumbnail">
+                                                        {% thumbnail p.image '180x160' crop='center' as im %}
+                                                            <img src="{{ im.url }}"
+                                                                 data-echo="{{ im.url }}"
+                                                                 class="img-responsive" alt="">
+                                                        {% endthumbnail %}
+                                                    </div>
+                                                </a>
+                                                <div class="price-add-to-cart">
+                                                <span class="price">
+                                                    <span class="electro-price">
+                                                        <ins><span class="amount"> </span></ins>
+                                                        <span class="amount"> $ {{ p.price }}</span>
+                                                    </span>
+                                                </span>
+                                                    <a rel="nofollow" href="single-product.html"
+                                                       class="button add_to_cart_button">Add to cart</a>
+                                                </div><!-- /.price-add-to-cart -->
+
+                                                <div class="hover-area">
+                                                    <div class="action-buttons">
+                                                        <a href="#" rel="nofollow" class="add_to_wishlist"> Wishlist</a>
+                                                        <a href="compare.html" class="add-to-compare-link"> Compare</a>
+                                                    </div>
+                                                </div>
+
+                                            </div><!-- /.product-inner -->
+                                        </div><!-- /.product-outer -->
+                                    </div><!-- /.products -->
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </main><!-- #main -->
+        </div><!-- #primary -->
+
+        <div id="sidebar" class="sidebar" role="complementary">
+
+            {% showLeftCategorySidebar latestProduct.0.main_menu__slug %}
+            <aside class="widget widget_text">
+                <div class="textwidget">
+                    <a href="#">
+                        <img src="assets/images/banner/ad-banner-sidebar.jpg" alt="Banner"></a>
+                </div>
+            </aside>
+            <aside class="widget widget_products">
+                <h3 class="widget-title">Son Ürünler</h3>
+                <ul class="product_list_widget">
+                    {% for p in latestProduct %}
+                        <li>
+                            <a href="{% url 'shop:product_list' p.slug %}" title="Notebook Purple G952VX-T7008T">
+                                {% thumbnail p.image '180x180' crop='center' as im %}
+                                    <img width="180" height="180" src="{{ im.url }}" alt="{{ p.title }}"
+                                         class="wp-post-image">
+                                {% endthumbnail %}
+                                <span class="product-title">{{ p.title }}</span>
+                            </a>
+                            <span class="electro-price"><span class="amount">₺ {{ p.price }}</span></span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </aside>
+        </div>
+
+    </div>
+{% endblock %}

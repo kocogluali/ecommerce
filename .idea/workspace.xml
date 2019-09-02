@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="f4e35c0d-0f0d-4817-ae0c-390f63d581f4" name="Default Changelist" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DjangoConsoleOptions" custom-start-script="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)">
+    <option name="myCustomStartScript" value="import sys; print('Python %s on %s' % (sys.version, sys.platform))&#10;import django; print('Django %s' % django.get_version())&#10;sys.path.extend([WORKING_DIR_AND_PYTHON_PATHS])&#10;if 'setup' in dir(django): django.setup()&#10;import django_manage_shell; django_manage_shell.run(PROJECT_ROOT)" />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="ecommerce" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+        <option value="HTML File" />
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1Pe1KNEFyCJqsrFn2uehev90y3g" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="restartRequiresConfirmation" value="false" />
+    <property name="settings.editor.selected.configurable" value="settings.github" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/staticfiles" />
+      <recent name="$PROJECT_DIR$/templates" />
+      <recent name="$PROJECT_DIR$/campaings" />
+      <recent name="$PROJECT_DIR$/templates/site/account/checkout" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/templates/site/account/checkout" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager">
+    <configuration name="ecommerce" type="Python.DjangoServer" factoryName="Django server">
+      <module name="ecommerce" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+        <env name="DJANGO_SETTINGS_MODULE" value="ecommerce.settings" />
+      </envs>
+      <option name="SDK_HOME" value="$PROJECT_DIR$/venv/bin/python" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="launchJavascriptDebuger" value="false" />
+      <option name="port" value="8001" />
+      <option name="host" value="" />
+      <option name="additionalOptions" value="" />
+      <option name="browserUrl" value="" />
+      <option name="runTestServer" value="false" />
+      <option name="runNoReload" value="false" />
+      <option name="useCustomRunCommand" value="false" />
+      <option name="customRunCommand" value="" />
+      <method v="2" />
+    </configuration>
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="f4e35c0d-0f0d-4817-ae0c-390f63d581f4" name="Default Changelist" comment="" />
+      <created>1547044770219</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1547044770219</updated>
+      <workItem from="1547044772187" duration="4902000" />
+      <workItem from="1547468068956" duration="723000" />
+      <workItem from="1547486636072" duration="4866000" />
+      <workItem from="1547499068979" duration="4659000" />
+      <workItem from="1547553469646" duration="17736000" />
+      <workItem from="1547659112578" duration="261000" />
+      <workItem from="1547707458734" duration="22662000" />
+      <workItem from="1547802611949" duration="24000" />
+      <workItem from="1547844330953" duration="2060000" />
+      <workItem from="1548009848059" duration="625000" />
+      <workItem from="1548224719678" duration="363000" />
+      <workItem from="1548225158802" duration="28918000" />
+      <workItem from="1548397256288" duration="24948000" />
+      <workItem from="1548705257925" duration="17000" />
+      <workItem from="1548829862494" duration="28219000" />
+      <workItem from="1548965645727" duration="4697000" />
+      <workItem from="1549106144437" duration="186000" />
+      <workItem from="1549107772471" duration="842000" />
+      <workItem from="1549293047834" duration="124000" />
+      <workItem from="1549743419871" duration="490000" />
+      <workItem from="1549751588454" duration="610000" />
+      <workItem from="1549884992618" duration="579000" />
+      <workItem from="1549897640096" duration="471000" />
+      <workItem from="1552380217059" duration="90000" />
+      <workItem from="1552478460498" duration="531000" />
+      <workItem from="1552481551151" duration="1680000" />
+      <workItem from="1552490287274" duration="31000" />
+      <workItem from="1552923678239" duration="612000" />
+      <workItem from="1552926285496" duration="51000" />
+      <workItem from="1553095052250" duration="42000" />
+      <workItem from="1554479963801" duration="2176000" />
+      <workItem from="1560954838923" duration="5609000" />
+      <workItem from="1561627889499" duration="93000" />
+      <workItem from="1566219684443" duration="73000" />
+      <workItem from="1566337599756" duration="3362000" />
+      <workItem from="1566382156287" duration="2840000" />
+      <workItem from="1566415052564" duration="6000" />
+      <workItem from="1566477624307" duration="1858000" />
+      <workItem from="1566561142503" duration="365000" />
+      <workItem from="1566811780866" duration="859000" />
+      <workItem from="1566815016555" duration="9000" />
+      <workItem from="1567375814788" duration="8113000" />
+    </task>
+    <task id="LOCAL-00001" summary="ecommerce_31 ocak">
+      <created>1548965726407</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1548965726407</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="ecommerce_31 ocak" />
+    <option name="LAST_COMMIT_MESSAGE" value="ecommerce_31 ocak" />
+  </component>
+</project>
